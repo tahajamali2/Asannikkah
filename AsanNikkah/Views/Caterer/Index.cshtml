@@ -1,0 +1,419 @@
+﻿@model AsanNikkah.SpecialViewModels.AllAccountWithCatererDetail
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/ClientPanelLayout.cshtml";
+}
+
+@if (@Model.All_Account == null)
+{
+    @section Menu {
+        <ul class="nav navbar-nav nav_1">
+            <li><a href="/Home/Index">Home</a></li>
+
+            <li>
+                <a href="/Halls/Index">
+                    Hall &amp;
+
+                    Banquets
+                </a>
+            </li>
+            <li>
+                <a href="/Caterers/Index">Caterers</a>
+            </li>
+            <li><a href="/Aboutus/Index">About</a></li>
+            <!--<li class="dropdown">
+                                              <a href="#" class="dropdown-toggle" data-
+
+            toggle="dropdown">Matches<span class="caret"></span></a>
+                                              <ul class="dropdown-menu" role="menu">
+                                                <li><a href="matches.html">New
+
+            Matches</a></li>
+                                                <li><a href="viewed-profile.html">Who
+
+            Viewed my Profile</a></li>
+                                                <li><a href="viewed-
+
+            not_contacted.html">Viewed & not Contacted</a></li>
+                                                <li><a href="members.html">Premium
+
+            Members</a></li>
+                                                <li><a
+
+            href="shortlisted.html">Shortlisted Profile</a></li>
+                                              </ul>
+                                            </li>-->
+            <!--<li class="dropdown">
+                                              <a href="#" class="dropdown-toggle" data-
+
+            toggle="dropdown">Search<span class="caret"></span></a>
+                                              <ul class="dropdown-menu" role="menu">
+                                                <li><a href="search.html">Regular
+
+            Search</a></li>
+                                                <li><a href="profile.html">Recently
+
+            Viewed Profiles</a></li>
+                                                <li><a href="search-id.html">Search By
+
+            Profile ID</a></li>
+                                                <li><a href="faq.html">Faq</a></li>
+                                                <li><a
+
+            href="shortcodes.html">Shortcodes</a></li>
+                                              </ul>
+                                            </li>-->
+            <li>
+                <a href="/Contactus/Index">
+                    Contact
+
+                    Us
+                </a>
+            </li>
+
+            <li style="background-color:#ffa417 !important;">
+                <a href="/Account/Login">
+                    Login
+                </a>
+            </li>
+
+        </ul>
+    }
+}
+
+else
+{
+    @section Menu {
+        <ul class="nav navbar-nav nav_1">
+            <li><a href="/Home/Index">Home</a></li>
+            @if (@Model.All_Account.ProfileType == "M")
+            {
+                <li><a href="/Profiles/Index">Profiles</a></li>
+            }
+            <li><a href="/Halls/Index">Hall &amp; Banquets</a></li>
+            <li><a href="/Caterers/Index">Caterers</a></li>
+            @if (@Model.All_Account.ProfileType == "M")
+            {
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Messages<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Messages/Index">Inbox</a></li>
+                    </ul>
+                </li>
+            }
+            <li><a href="/Aboutus/Index">About</a></li>
+            <!--<li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Matches<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="matches.html">New Matches</a></li>
+                <li><a href="viewed-profile.html">Who Viewed my Profile</a></li>
+                <li><a href="viewed-not_contacted.html">Viewed & not Contacted</a></li>
+                <li><a href="members.html">Premium Members</a></li>
+                <li><a href="shortlisted.html">Shortlisted Profile</a></li>
+              </ul>
+            </li>-->
+            <!--<li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Search<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="search.html">Regular Search</a></li>
+                <li><a href="profile.html">Recently Viewed Profiles</a></li>
+                <li><a href="search-id.html">Search By Profile ID</a></li>
+                <li><a href="faq.html">Faq</a></li>
+                <li><a href="shortcodes.html">Shortcodes</a></li>
+              </ul>
+            </li>-->
+            <li><a href="/Contactus/Index">Contact Us</a></li>
+            <li class="last dropdown" style="cursor:pointer">
+                <a class="dropdown-toggle" data-toggle="dropdown"><img src="@Model.All_Account.Img" width="32px" height="32px"><b style="font-size:18px">@Model.All_Account.Name<span class="caret"></span></b></a>
+                <ul class="dropdown-menu user-li" role="menu" style="display: none;">
+                    <li><a href="#">My Profile</a></li>
+                    <li><a href="/Account/Logout">Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    }
+}
+
+<div class="grid_3">
+    <div class="container">
+        <div class="breadcrumb1">
+            <ul>
+                <a href="index.html"><i class="fa fa-home home_1"></i></a>
+                <span class="divider">&nbsp;|&nbsp;</span>
+                <li class="current-page"></li>
+            </ul>
+        </div>
+        <div class="profile">
+            <div class="col-md-8 profile_left">
+                <h2>@Model.Caterer.Caterer_Name</h2>
+                <div class="col_3">
+                    <div class="col-sm-4 row_2">
+                        @if (@Model.Caterer.Img1 != "")
+                        {
+
+                            <a href="/Content/UploadedData/CatererImages/@Model.Caterer.Img1" data-lightbox="image-1"><img src="/Content/UploadedData/CatererImages/@Model.Caterer.Img1" class="col-sm-12 col-xs-10"></a>
+
+                        }
+
+                        else
+                        {
+
+                            <a href="/Content/images/caterer-icon.png" data-lightbox="image-1">
+                                <img src="/Content/images/caterer-icon.png" class="col-sm-12 col-xs-10">
+                            </a>
+
+                        }
+                        <div class="clear-fix"></div>
+
+                        @if (@Model.Caterer.Img2 != "")
+                        {
+                            <a href="/Content/UploadedData/CatererImages/@Model.Caterer.Img2" data-lightbox="image-2">
+                                <img src="/Content/UploadedData/CatererImages/@Model.Caterer.Img2" class="col-sm-4 col-xs-4" style="margin-top:20px;">
+                            </a>
+                        }
+
+                        @if (@Model.Caterer.Img3 != "")
+                        {
+                            <a href="/Content/UploadedData/CatererImages/@Model.Caterer.Img3" data-lightbox="image-3">
+                                <img src="/Content/UploadedData/CatererImages/@Model.Caterer.Img3" class="col-sm-4 col-xs-4" style="margin-top:20px;">
+                            </a>
+                        }
+
+                        @if (@Model.Caterer.Img4 != "")
+                        {
+                            <a href="/Content/UploadedData/CatererImages/@Model.Caterer.Img4" data-lightbox="image-4">
+                                <img src="/Content/UploadedData/CatererImages/@Model.Caterer.Img4" class="col-sm-4 col-xs-4" style="margin-top:20px;">
+                            </a>
+                        }
+
+                        @if (@Model.Caterer.Img5 != "")
+                        {
+                            <a href="/Content/UploadedData/CatererImages/@Model.Caterer.Img5" data-lightbox="image-5">
+                                <img src="/Content/UploadedData/CatererImages/@Model.Caterer.Img5" class="col-sm-4 col-xs-4" style="margin-top:20px;">
+                            </a>
+                        }
+
+                    </div>
+                    <div class="col-sm-8 row_1">
+                        <table class="table_working_hours">
+                            <tbody>
+                                <tr class="opened_1">
+                                    <td class="day_label">Email : </td>
+                                    <td class="day_value">@Model.Caterer.Email</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label">Country</td>
+                                    <td class="day_value">@Model.Caterer.Country</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label">City :</td>
+                                    <td class="day_value">@Model.Caterer.City</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label">Buffet Per Head :</td>
+                                    <td class="day_value">@Model.Caterer.Buffet_PH</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label">Speciality :</td>
+                                    <td class="day_value">@Model.Caterer.Speciality</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        @if (@Model.All_Account == null)
+                        {
+                            <ul class="login_details">
+                                <li>Already a member? <a href="/Account/Login">Login Now</a></li>
+                                <li>If not a member? <a href="/Account/Registration">Register Now</a></li>
+                            </ul>
+                        }
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+                <div class="col_4">
+                    <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+                        <ul id="myTab" class="nav nav-tabs nav-tabs1" role="tablist">
+                            <li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">About Us</a></li>
+                        </ul>
+                        <div id="myTabContent" class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="home" aria-labelledby="home-tab">
+                                <div class="basic_1">
+                                    <h3>Other &amp; Info</h3>
+                                    <div class="col-md-6 basic_1-left">
+                                        <table class="table_working_hours">
+                                            <tbody>
+                                                <tr class="opened_1">
+                                                    <td class="day_label">Office Contact :</td>
+                                                    @if (@Model.Caterer.Office_Contact != "")
+                                                    {
+                                                        <td class="day_value">@Model.Caterer.Office_Contact</td>
+                                                    }
+
+                                                    else
+                                                    {
+                                                        <td>Not Available</td>
+                                                    }
+
+                                                </tr>
+                                                <tr class="opened">
+                                                    <td class="day_label">Office Hours :</td>
+                                                    @if (@Model.Caterer.Office_Hours_From != "" && @Model.Caterer.Office_Hours_To != "")
+                                                    {
+                                                        <td class="day_value">@Model.Caterer.Office_Hours_From To @Model.Caterer.Office_Hours_To</td>
+                                                    }
+
+                                                    else
+                                                    {
+                                                        <td>Not Available</td>
+                                                    }
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6 basic_1-left">
+                                        <table class="table_working_hours">
+                                            <tbody>
+                                                <tr class="opened_1">
+                                                    <td class="day_label">Website Url :</td>
+                                                    @if (@Model.Caterer.Website_Url != "")
+                                                    {
+                                                        <td class="day_value">@Model.Caterer.Website_Url</td>
+                                                    }
+
+                                                    else
+                                                    {
+                                                        <td>Not Available</td>
+                                                    }
+                                                </tr>
+                                                <tr class="opened">
+                                                    <td class="day_label">Facebook Page :</td>
+                                                    @if (@Model.Caterer.Facebook_Page != "")
+                                                    {
+                                                        <td class="day_value">@Model.Caterer.Facebook_Page</td>
+                                                    }
+
+                                                    else
+                                                    {
+                                                        <td>Not Available</td>
+                                                    }
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="clearfix"> </div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="profile" aria-labelledby="profile-tab">
+                                <div class="basic_3">
+                                    <h4>Family Details</h4>
+                                    <div class="basic_1 basic_2">
+                                        <h3>Basics</h3>
+                                        <div class="col-md-6 basic_1-left">
+                                            <table class="table_working_hours">
+                                                <tbody>
+                                                    <tr class="opened">
+                                                        <td class="day_label">Father's Occupation :</td>
+                                                        <td class="day_value">Not Specified</td>
+                                                    </tr>
+                                                    <tr class="opened">
+                                                        <td class="day_label">Mother's Occupation :</td>
+                                                        <td class="day_value">Not Specified</td>
+                                                    </tr>
+                                                    <tr class="opened">
+                                                        <td class="day_label">No. of Brothers :</td>
+                                                        <td class="day_value closed"><span>Not Specified</span></td>
+                                                    </tr>
+                                                    <tr class="opened">
+                                                        <td class="day_label">No. of Sisters :</td>
+                                                        <td class="day_value closed"><span>Not Specified</span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="profile1" aria-labelledby="profile-tab1">
+                                <div class="basic_1 basic_2">
+                                    <div class="basic_1-left">
+                                        <table class="table_working_hours">
+                                            <tbody>
+                                                <tr class="opened">
+                                                    <td class="day_label">Age   :</td>
+                                                    <td class="day_value">28 to 35</td>
+                                                </tr>
+                                                <tr class="opened">
+                                                    <td class="day_label">Marital Status :</td>
+                                                    <td class="day_value">Single</td>
+                                                </tr>
+                                                <tr class="opened">
+                                                    <td class="day_label">Body Type :</td>
+                                                    <td class="day_value closed"><span>Doesn't matter</span></td>
+                                                </tr>
+                                                <tr class="opened">
+                                                    <td class="day_label">Complexion :</td>
+                                                    <td class="day_value closed"><span>Doesn't matter</span></td>
+                                                </tr>
+                                                <tr class="opened">
+                                                    <td class="day_label">Height 5ft 9 in / 175cm :</td>
+                                                    <td class="day_value closed"><span>Doesn't matter</span></td>
+                                                </tr>
+                                                <tr class="opened">
+                                                    <td class="day_label">Diet :</td>
+                                                    <td class="day_value closed"><span>Doesn't matter</span></td>
+                                                </tr>
+                                                <tr class="opened">
+                                                    <td class="day_label">Kujadosham / Manglik :</td>
+                                                    <td class="day_value closed"><span>No</span></td>
+                                                </tr>
+                                                <tr class="opened">
+                                                    <td class="day_label">Religion :</td>
+                                                    <td class="day_value closed"><span>Doesn't matter</span></td>
+                                                </tr>
+                                                <tr class="opened">
+                                                    <td class="day_label">Caste :</td>
+                                                    <td class="day_value closed"><span>Doesn't matter</span></td>
+                                                </tr>
+                                                <tr class="opened">
+                                                    <td class="day_label">Mother Tongue :</td>
+                                                    <td class="day_value closed"><span>Doesn't matter</span></td>
+                                                </tr>
+                                                <tr class="opened">
+                                                    <td class="day_label">Education :</td>
+                                                    <td class="day_value closed"><span>Doesn't matter</span></td>
+                                                </tr>
+                                                <tr class="opened">
+                                                    <td class="day_label">Occupation :</td>
+                                                    <td class="day_value closed"><span>Doesn't matter</span></td>
+                                                </tr>
+                                                <tr class="opened">
+                                                    <td class="day_label">Country of Residence :</td>
+                                                    <td class="day_value closed"><span>Doesn't matter</span></td>
+                                                </tr>
+                                                <tr class="opened">
+                                                    <td class="day_label">State :</td>
+                                                    <td class="day_value closed"><span>Doesn't matter</span></td>
+                                                </tr>
+                                                <tr class="opened">
+                                                    <td class="day_label">Residency Status :</td>
+                                                    <td class="day_value closed"><span>Doesn't matter</span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+

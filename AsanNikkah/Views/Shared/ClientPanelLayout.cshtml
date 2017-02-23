@@ -1,0 +1,817 @@
+﻿@{
+    ViewBag.Title = "ClientPanelLayout";
+}
+
+
+<!--A Design by W3layouts
+Author: W3layout
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nikkah Made Easy - Connecting Souls</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="~/Content/images/icon.png" />
+    <link rel="stylesheet" href="../../Content/css/lightbox.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Marital Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <link href="~/Content/css/bootstrap-3.1.1.min.css" rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" href="../../Content/css/rateyo.css"><!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="~/Scripts/js/jquery.min.js"></script>
+    <script src="~/Scripts/js/bootstrap.min.js"></script>
+    <!-- Custom Theme files -->
+    <link href="~/Content/css/style.css" rel='stylesheet' type='text/css' />
+    <link href='//fonts.googleapis.com/css?family=Oswald:300,400,700' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Ubuntu:300,400,500,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="../../Content/css/timepicker.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!----font-Awesome----->
+    <link href="~/Content/css/font-awesome.css" rel="stylesheet">
+    <!----font-Awesome----->
+    <script src="../../Scripts/js/rateyo.js"></script>
+    <script src="../../Scripts/js/jquery-validate.js"></script>
+    <script src="../../Scripts/js/timepicker.js"></script>
+    <script src="../../Scripts/js/jquery.twbsPagination.js"></script>
+    <script src="../../Scripts/js/lightbox.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        function ShowNotification(response,parentelement,second)
+        {
+            var bool = false;
+            $("#alertbar_modal").remove();
+            var exception = "<div class=\"alert alert-danger fade in alert-dismissable\" id=\"alertbar_modal\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\" title=\"close\">×</a>";
+            $.each($.parseJSON(response), function (index, element) {
+
+                if (element.returntype == "success")
+                {
+                    exception = "<div class=\"alert alert-success fade in alert-dismissable\" id=\"alertbar_modal\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\" title=\"close\">×</a><strong>Well done! </strong>" + element.message + "<br>";
+                    bool = true;
+                    return true;
+                }
+
+                else
+                {
+                    exception += "<strong>*</strong>" + element.message + "<br>";
+                    bool = false;
+                }
+
+            });
+
+            exception += "</div>";
+            $(parentelement).prepend(exception);
+            $('html, body').animate({
+                scrollTop: $("html, body").offset().top
+            }, 500);
+            //setTimeout(function () { $("#alertbar_modal").fadeOut(300); $("#alertbar_modal").remove(); }, second*1000);
+            return bool;
+        }
+
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        function Iserror(response)
+        {
+            var bool = false;
+            var profileid = "";
+            $.each($.parseJSON(response), function (index, element) {
+                if (element.returntype == "success")
+                {
+                    bool = true;
+                    profileid = element.profileid;
+                    return true;
+                }
+
+                else
+                {
+                    bool = false;
+                    profileid = "error";
+                    return false;
+                }
+            });
+
+            return profileid;
+        }
+
+        $(document).ready(function () {
+
+
+        @RenderSection("Script", required: false)
+
+           
+
+            $.fn.serializeObject = function () {
+                var o = {};
+                var a = this.serializeArray();
+                $.each(a, function () {
+                    if (o[this.name] !== undefined) {
+                        if (!o[this.name].push) {
+                            o[this.name] = [o[this.name]];
+                        }
+                        o[this.name].push(this.value || '');
+                    } else {
+                        o[this.name] = this.value || '';
+                    }
+                });
+                return o;
+            };
+
+            $(".rateYo").each(function (i, obj) {
+
+                var val = $(obj).attr("data-rating");
+                $(obj).rateYo({
+                    rating: val,
+                    readOnly: true
+                });
+            });
+
+
+            $(".dropdown").hover(
+                function () {
+                    $('.dropdown-menu', this).stop(true, true).slideDown("fast");
+                    $(this).toggleClass('open');
+                },
+                function () {
+                    $('.dropdown-menu', this).stop(true, true).slideUp("fast");
+                    $(this).toggleClass('open');
+                }
+            );
+            var d = new Date();
+            var d2 = new Date(70, 0, 1);
+
+
+            $(".datepicker").datepicker({
+                defaultDate:d2,
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '1940:' + (d.getFullYear() - 18).toString()
+            });
+
+
+            /*Update Modal Methods*/
+
+            $("#caterer-basic-info-update-form").validate({
+                rules: {
+                    caterername: {
+                        minlength: 3,
+                        required: true
+                    },
+                    username: {
+                        minlength: 5,
+                        required: true,
+                    },
+                    email: {
+                        required: true,
+                    },
+                    password: {
+                        minlength: 8,
+                        required: true
+                    },
+                    repassword: {
+                        equalTo: "#password-caterer"
+                    }
+                    ,
+                    city: {
+                        required: true
+                    }
+                    ,
+                    capacity: {
+                        required: true
+                    },
+                    rate: {
+                        required: true
+                    }
+                },
+                messages: {
+                    repassword: {
+                        equalTo: "Password does not matched !"
+                    }
+                },
+                showErrors: function (errorMap, errorList) {
+                    $.each(this.successList, function (index, value) {
+                        return $(value).popover("hide");
+                    });
+                    return $.each(errorList, function (index, value) {
+                        var _popover;
+                        console.log(value.message);
+                        _popover = $(value.element).popover({
+                            trigger: "manual",
+                            placement: "top",
+                            content: value.message,
+                            template: "<div class=\"popover\"><div class=\"arrow\"></div><div class=\"popover-inner\"><div class=\"popover-content\"><p></p></div></div></div>"
+                        });
+                        _popover.data("bs.popover").options.content = value.message;
+                        return $(value.element).popover("show");
+                    });
+                }
+            });
+
+            $("#country-dropdown-caterer-update").change(function () {
+                if ($(this).val() == "Pakistan") {
+                    $("#city-textbox-caterer-update").hide();
+                    $("#city-textbox-caterer-update").removeAttr("name");
+                    $("#city-dropdown-caterer-update").show();
+                    $("#city-dropdown-caterer-update").attr("name", "city");
+                }
+                else {
+                    $("#city-textbox-caterer-update").show();
+                    $("#city-textbox-caterer-update").attr("name", "city");
+                    $("#city-dropdown-caterer-update").hide();
+                    $("#city-dropdown-caterer-update").removeAttr("name");
+                }
+            });
+
+            $("#caterer-basic-info-update-form").submit(function (e) {
+                e.preventDefault();
+                if ($("#caterer-basic-info-update-form").valid()) {
+                   
+                }
+            });
+
+
+            
+            $("#caterer-password-update-form").validate({
+                rules: {
+
+                    oldpassword: {
+                        minlength: 8,
+                        required: true
+                    },
+                    newpassword: {
+                        minlength: 8,
+                        required: true
+                    },
+                    confirmpassword: {
+                        equalTo: "#password-caterer-update"
+                    }
+                },
+                messages: {
+                    confirmpassword: {
+                        equalTo: "Password does not matched."
+                    }
+                },
+                showErrors: function (errorMap, errorList) {
+                    $.each(this.successList, function (index, value) {
+                        return $(value).popover("hide");
+                    });
+                    return $.each(errorList, function (index, value) {
+                        var _popover;
+                        console.log(value.message);
+                        _popover = $(value.element).popover({
+                            trigger: "manual",
+                            placement: "top",
+                            content: value.message,
+                            template: "<div class=\"popover\"><div class=\"arrow\"></div><div class=\"popover-inner\"><div class=\"popover-content\"><p></p></div></div></div>"
+                        });
+                        _popover.data("bs.popover").options.content = value.message;
+                        return $(value.element).popover("show");
+                    });
+                }
+            });
+
+            $("#caterer-password-update-form").submit(function (e) {
+                e.preventDefault();
+                if ($("#caterer-password-update-form").valid()) {
+
+                }
+            });
+
+        });
+    </script>
+    <style>
+        #pluswrap {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            display: none;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.91);
+            top: 0;
+            z-index: 10001;
+        }
+
+        .tab-active {
+            background-color:#ffa417 !important;
+            color:#fff !important;
+        }
+
+        .thumb-image {
+                float: left;
+    width: 100px;
+    position: relative;
+    padding: 5px;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div id="pluswrap">
+        <div class="plus">
+            <img src="@Url.Content("~/Content/images/ring-alt.gif")" style="position:absolute;top:47%;left:47%;" />
+        </div>
+    </div>
+    <!-- ============================  Navigation Start =========================== -->
+    <div class="navbar navbar-inverse-blue navbar">
+        <!--<div class="navbar navbar-inverse-blue navbar-fixed-top">-->
+        <div class="navbar-inner">
+            <div class="container">
+
+                <a class="brand" href="/"><img src="~/Content/images/logo.png" alt="logo"></a>
+                <div class="pull-right">
+                    <nav class="navbar nav_bottom" role="navigation">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <div class="navbar-header nav_2">
+                            <button type="button" class="navbar-toggle collapsed navbar-toggle1" data-toggle="collapse" data-target="#bs-megadropdown-tabs">
+                                Menu
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="#"></a>
+                        </div>
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
+                            @RenderSection("Menu", required: false)
+                        </div><!-- /.navbar-collapse -->
+                    </nav>
+                </div> <!-- end pull-right -->
+                <!--<div class="navigation">
+                  <nav id="colorNav">
+                    <ul>
+                     <li class="green">
+                         <a href="#" class="icon-home"></a>
+                         <ul>
+                             <li><a href="login.html">Login</a></li>
+                             <li><a href="register.html">Register</a></li>
+                             <li><a href="index.html">Logout</a></li>
+                         </ul>
+                     </li>
+                    </ul>
+                  </nav>
+                </div>-->
+                <div class="clearfix"> </div>
+            </div> <!-- end container -->
+        </div> <!-- end navbar-inner -->
+    </div> <!-- end navbar-inverse-blue -->
+    <!-- ============================  Navigation End ============================ -->
+
+    @RenderBody()
+
+    <!--<div class="map">
+        <iframe src="https://www.google.com/maps?q=Hyderabad, Sindh, Pakistan&output=embed"> </iframe>
+    </div>-->
+    <hr />
+    <div class="footer">
+        <div class="container">
+            <div class="col-md-4 col_2">
+                <h4>About Us</h4>
+                <p>"AsanNikkah is an online place which aims to make Nikkah easy keeping in mind the privacy of both parties i.e. bride and groom. Its slogan is connecting souls, which is not just connnecting bride and groom but their families."</p>
+            </div>
+            <div class="col-md-2 col_2">
+                <h4>Help & Support</h4>
+                <ul class="footer_links">
+                    <li><a href="/Contactus/Index">Contact us</a></li>
+                    <!--<li><a href="#">24x7 Live help</a></li>
+                    <li><a href="#">Feedback</a></li>
+                    <li><a href="faq.html">FAQs</a></li>-->
+                </ul>
+            </div>
+            <!--<div class="col-md-2 col_2">
+                <h4>Quick Links</h4>
+                <ul class="footer_links">
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms and Conditions</a></li>
+                    <li><a href="services.html">Services</a></li>
+                </ul>
+            </div>-->
+            <!--<div class="col-md-2 col_2">
+                <h4>Social</h4>
+                <ul class="footer_social">
+                  <li><a href="#"><i class="fa fa-facebook fa1"> </i></a></li>
+                  <li><a href="#"><i class="fa fa-twitter fa1"> </i></a></li>
+                  <li><a href="#"><i class="fa fa-google-plus fa1"> </i></a></li>
+                  <li><a href="#"><i class="fa fa-youtube fa1"> </i></a></li>
+                </ul>
+            </div>-->
+            <div class="clearfix"> </div>
+            <div class="copy">
+                <p>Copyright © 2015 Asannikkah . All Rights Reserved  | Design by <a href="#">Veinz Tech</a> </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myprofilecaterermodel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="overflow-y: initial !important;">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#c32143">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title-contactus" id="myModalLabel " style="color:#fff;">My Profile</h4>
+                </div>
+                    <div class="modal-body" style="height:600px;overflow-y: auto;">
+
+                        <!--Start                    -->
+
+                        <div id="regis-section">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" href="#basic-info-caterer">Basic Info</a></li>
+                                <li class=""><a data-toggle="tab" href="#pictures-update-caterer">Pictures</a></li>
+                                <li class=""><a data-toggle="tab" href="#change-password-caterer">Change Password</a></li>
+                            </ul>
+                            <div class="clearfix"></div>
+                            <br>
+                            <div class="tab-content">
+
+                                <div id="basic-info-caterer" class="tab-pane fade active in">
+
+                                    <div id="basic-info-update-area">
+                                        <small style="margin-left:17px;">All (*) Fields Are Required.</small>
+                                        <div class="clearfix"></div>
+                                        <div class="services" style="margin-top:20px;">
+                                            <div class="col-sm-12 login_left">
+                                                <form id="caterer-basic-info-update-form" action="\Account\Registration" method="post" novalidate="novalidate">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="edit-name">Caterer name <span class="form-required" title="This field is required.">*</span></label>
+                                                            <input type="text" name="caterername" value="" size="60" maxlength="60" class="form-text">
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+
+                                                    <div class="clearfix"> </div>
+                                                    <div class="clearfix"> </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group form-group1">
+                                                            <label class="col-sm-2 control-lable" for="sex">Country <span class="form-required" title="This field is required.">*</span></label>
+                                                            <div class="select-block1">
+                                                                <select name="country" class="form-control" id="country-dropdown-caterer-update">
+                                                                    <option value="Afghanistan">Afghanistan</option>
+                                                                    <option value="Algeria">Algeria</option>
+                                                                    <option value="Andorra">Andorra</option>
+                                                                    <option value="Australia">Australia</option>
+                                                                    <option value="Austria">Austria</option>
+                                                                    <option value="Azerbaijan">Azerbaijan</option>
+                                                                    <option value="Bahrain">Bahrain</option>
+                                                                    <option value="Bangladesh">Bangladesh</option>
+                                                                    <option value="Belgium">Belgium</option>
+                                                                    <option value="Bhutan">Bhutan</option>
+                                                                    <option value="Bolivia">Bolivia</option>
+                                                                    <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                                                                    <option value="Botswana">Botswana</option>
+                                                                    <option value="Bouvet Island">Bouvet Island</option>
+                                                                    <option value="Brazil">Brazil</option>
+                                                                    <option value="British Indian Ocean Territory">British Indian Ocean Territory</option>
+                                                                    <option value="British Virgin Islands">British Virgin Islands</option>
+                                                                    <option value="Brunei Darussalam">Brunei Darussalam</option>
+                                                                    <option value="Bulgaria">Bulgaria</option>
+                                                                    <option value="Burkina Faso">Burkina Faso</option>
+                                                                    <option value="Burma">Burma</option>
+                                                                    <option value="Burundi">Burundi</option>
+                                                                    <option value="Cambodia">Cambodia</option>
+                                                                    <option value="Cameroon">Cameroon</option>
+                                                                    <option value="Canada">Canada</option>
+                                                                    <option value="Cape Verde">Cape Verde</option>
+                                                                    <option value="Cayman Islands">Cayman Islands</option>
+                                                                    <option value="Central African Republic">Central African Republic</option>
+                                                                    <option value="Chad">Chad</option>
+                                                                    <option value="Chile">Chile</option>
+                                                                    <option value="China">China</option>
+                                                                    <option value="Cyprus">Cyprus</option>
+                                                                    <option value="Czech Republic">Czech Republic</option>
+                                                                    <option value="Denmark">Denmark</option>
+                                                                    <option value="Egypt">Egypt</option>
+                                                                    <option value="Finland">Finland</option>
+                                                                    <option value="France">France</option>
+                                                                    <option value="Germany">Germany</option>
+                                                                    <option value="Gibraltar">Gibraltar</option>
+                                                                    <option value="Greece">Greece</option>
+                                                                    <option value="Hong Kong (SAR)">Hong Kong (SAR)</option>
+                                                                    <option value="Hungary">Hungary</option>
+                                                                    <option value="Iceland">Iceland</option>
+                                                                    <option value="India">India</option>
+                                                                    <option value="Indonesia">Indonesia</option>
+                                                                    <option value="Iran">Iran</option>
+                                                                    <option value="Iraq">Iraq</option>
+                                                                    <option value="Ireland">Ireland</option>
+                                                                    <option value="Israel">Israel</option>
+                                                                    <option value="Italy">Italy</option>
+                                                                    <option value="Japan">Japan</option>
+                                                                    <option value="Jordan">Jordan</option>
+                                                                    <option value="Kazakhstan">Kazakhstan</option>
+                                                                    <option value="Kenya">Kenya</option>
+                                                                    <option value="Korea, North">Korea, North</option>
+                                                                    <option value="Korea, South">Korea, South</option>
+                                                                    <option value="Kuwait">Kuwait</option>
+                                                                    <option value="Lebanon">Lebanon</option>
+                                                                    <option value="Libya">Libya</option>
+                                                                    <option value="Malaysia">Malaysia</option>
+                                                                    <option value="Maldives">Maldives</option>
+                                                                    <option value="Mali">Mali</option>
+                                                                    <option value="Man, Isle of">Man, Isle of</option>
+                                                                    <option value="Mauritania">Mauritania</option>
+                                                                    <option value="Mauritius">Mauritius</option>
+                                                                    <option value="Mexico">Mexico</option>
+                                                                    <option value="Nepal">Nepal</option>
+                                                                    <option value="Netherlands">Netherlands</option>
+                                                                    <option value="New Zealand">New Zealand</option>
+                                                                    <option value="Nigeria">Nigeria</option>
+                                                                    <option value="Norway">Norway</option>
+                                                                    <option value="Oman">Oman</option>
+                                                                    <option value="Pakistan" selected="">Pakistan</option>
+                                                                    <option value="Panama">Panama</option>
+                                                                    <option value="Peru">Peru</option>
+                                                                    <option value="Philippines">Philippines</option>
+                                                                    <option value="Poland">Poland</option>
+                                                                    <option value="Portugal">Portugal</option>
+                                                                    <option value="Qatar">Qatar</option>
+                                                                    <option value="Romania">Romania</option>
+                                                                    <option value="Russia">Russia</option>
+                                                                    <option value="Saudi Arabia">Saudi Arabia</option>
+                                                                    <option value="Senegal">Senegal</option>
+                                                                    <option value="Serbia">Serbia</option>
+                                                                    <option value="Singapore">Singapore</option>
+                                                                    <option value="Somalia">Somalia</option>
+                                                                    <option value="South Africa">South Africa</option>
+                                                                    <option value="Spain">Spain</option>
+                                                                    <option value="Sri Lanka">Sri Lanka</option>
+                                                                    <option value="Sudan">Sudan</option>
+                                                                    <option value="Swaziland">Swaziland</option>
+                                                                    <option value="Sweden">Sweden</option>
+                                                                    <option value="Switzerland">Switzerland</option>
+                                                                    <option value="Syria">Syria</option>
+                                                                    <option value="Taiwan">Taiwan</option>
+                                                                    <option value="Tajikistan">Tajikistan</option>
+                                                                    <option value="Tanzania">Tanzania</option>
+                                                                    <option value="Thailand">Thailand</option>
+                                                                    <option value="Tunisia">Tunisia</option>
+                                                                    <option value="Turkey">Turkey</option>
+                                                                    <option value="Turkmenistan">Turkmenistan</option>
+                                                                    <option value="Uganda">Uganda</option>
+                                                                    <option value="Ukraine">Ukraine</option>
+                                                                    <option value="United Arab Emirates">United Arab Emirates</option>
+                                                                    <option value="United Kingdom">United Kingdom</option>
+                                                                    <option value="United States">United States</option>
+                                                                    <option value="Uzbekistan">Uzbekistan</option>
+                                                                    <option value="Vietnam">Vietnam</option>
+                                                                    <option value="World">World</option>
+                                                                    <option value="Yemen">Yemen</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group form-group1">
+                                                            <label class="col-sm-2 control-lable">City <span class="form-required" title="This field is required.">*</span></label>
+                                                            <div class="select-block1" id="city-div">
+                                                                <select name="city" id="city-dropdown-caterer-update" class="form-control"><option value="Islamabad" selected="">Islamabad</option><option value="Karachi">Karachi</option><option value="Rawalpindi">Rawalpindi</option><option value="Lahore">Lahore</option><option value="Peshawar">Peshawar</option><option value="Quetta">Quetta</option><option value="Multan">Multan</option><option value="Abbottabad">Abbottabad</option><option value="Hyderabad">Hyderabad</option><option value="Faisalabad">Faisalabad</option><option value="Muzaffarabad">Muzaffarabad</option><option value="Mohen jo daro">Mohen jo daro</option><option value="More kunda">More kunda</option><option value="Morgah">Morgah</option><option value="Moro">Moro</option><option value="Mubarik pur">Mubarik pur</option><option value="Mustung">Mustung</option><option value="Muridkay">Muridkay</option><option value="Murree">Murree</option><option value="Musafir khana">Musafir khana</option><option value="Mirpur mathelo">Mirpur mathelo</option><option value="Mari indus">Mari indus</option><option value="Mastoi">Mastoi</option><option value="Matiari">Matiari</option><option value="Matli">Matli</option><option value="Mehar">Mehar</option><option value="Mehmood kot">Mehmood kot</option><option value="Mehrab pur">Mehrab pur</option><option value="Mian chunnu">Mian chunnu</option><option value="Mian Walli">Mian Walli</option><option value="Mingora">Mingora</option><option value="Mir ali">Mir ali</option><option value="Miran shah">Miran shah</option><option value="Mirpur khas">Mirpur khas</option><option value="Muzaffargarh">Muzaffargarh</option><option value="Nankana sahib">Nankana sahib</option><option value="Narang mandi">Narang mandi</option><option value="Pak china fertilizer">Pak china fertilizer</option><option value="Pak pattan sharif">Pak pattan sharif</option><option value="Panjan kisan">Panjan kisan</option><option value="Panjgoor">Panjgoor</option><option value="Pannu aqil">Pannu aqil</option><option value="Panu Aqil">Panu Aqil</option><option value="Pasni">Pasni</option><option value="Pasroor">Pasroor</option><option value="Patoki">Patoki</option><option value="Phagwar">Phagwar</option><option value="Padidan">Padidan</option><option value="Nowshero peroz">Nowshero peroz</option><option value="Nowshera cantt">Nowshera cantt</option><option value="Narowal">Narowal</option><option value="Naseerabad">Naseerabad</option><option value="Naudero">Naudero</option><option value="Naukot">Naukot</option><option value="Naukundi">Naukundi</option><option value="Nawab shah">Nawab shah</option><option value="New saeedabad">New saeedabad</option><option value="Nilore">Nilore</option><option value="Noor kot">Noor kot</option><option value="Noorpur nooranga">Noorpur nooranga</option><option value="Phalia">Phalia</option><option value="Manshera">Manshera</option><option value="Khanqah dogran">Khanqah dogran</option><option value="Kotla jam">Kotla jam</option><option value="Kotla patdan">Kotla patdan</option><option value="Kotli loharan">Kotli loharan</option><option value="Kotri">Kotri</option><option value="Kumbh">Kumbh</option><option value="Kundina">Kundina</option><option value="Kot bunglow">Kot bunglow</option><option value="Kunjah">Kunjah</option><option value="Kunri">Kunri</option><option value="Laki marwat">Laki marwat</option><option value="Kotla arab ali khan">Kotla arab ali khan</option><option value="Kotla">Kotla</option><option value="Kot radha kishan">Kot radha kishan</option><option value="Khanqah sharif">Khanqah sharif</option><option value="Khewra">Khewra</option><option value="Khoski">Khoski</option><option value="Khudian Khas">Khudian Khas</option><option value="Khurian wala">Khurian wala</option><option value="Khushal kot">Khushal kot</option><option value="Khuzdar">Khuzdar</option><option value="Kot addu">Kot addu</option><option value="Kot ghulam mohd">Kot ghulam mohd</option><option value="Kot mithan">Kot mithan</option><option value="Lalamusa">Lalamusa</option><option value="Lala rukh">Lala rukh</option><option value="Malakand Agency">Malakand Agency</option><option value="Malakwal">Malakwal</option><option value="Mamu kunjan">Mamu kunjan</option><option value="Mandi bahauddin">Mandi bahauddin</option><option value="Mandra">Mandra</option><option value="Manga mandi">Manga mandi</option><option value="Mangal sada">Mangal sada</option><option value="Mangi">Mangi</option><option value="Mangla">Mangla</option><option value="Mangowal">Mangowal</option><option value="Makli">Makli</option><option value="Mailsi">Mailsi</option><option value="Madina">Madina</option><option value="Laliah">Laliah</option><option value="Lalshanra">Lalshanra</option><option value="Lasbella">Lasbella</option><option value="Lawrence pur">Lawrence pur</option><option value="Layyah">Layyah</option><option value="Liaquat pur">Liaquat pur</option><option value="Lodhran">Lodhran</option><option value="Lower Dir">Lower Dir</option><option value="Ludhan">Ludhan</option><option value="Machi goth">Machi goth</option><option value="Manoabad">Manoabad</option><option value="Shemier">Shemier</option><option value="Takhtbai">Takhtbai</option><option value="Talamba">Talamba</option><option value="Talhur">Talhur</option><option value="Tando adam">Tando adam</option><option value="Tando allahyar">Tando allahyar</option><option value="Tando jam">Tando jam</option><option value="Tando mohd khan">Tando mohd khan</option><option value="Tank">Tank</option><option value="Tarbela">Tarbela</option><option value="Tarmatan">Tarmatan</option><option value="Swatmingora">Swatmingora</option><option value="Swabi">Swabi</option><option value="Sohawa district jelum">Sohawa district jelum</option><option value="Shikar pur">Shikar pur</option><option value="Shorkot">Shorkot</option><option value="Shujabad">Shujabad</option><option value="Sibi">Sibi</option><option value="Sihala">Sihala</option><option value="Sikandarabad">Sikandarabad</option><option value="Silanwala">Silanwala</option><option value="Sita road">Sita road</option><option value="Skardu">Skardu</option><option value="Sohawa district daska">Sohawa district daska</option><option value="Taunsa sharif">Taunsa sharif</option><option value="Taxila">Taxila</option><option value="Umar kot">Umar kot</option><option value="Upper deval">Upper deval</option><option value="Usta mohammad">Usta mohammad</option><option value="Village Sunder">Village Sunder</option><option value="Wahi hassain">Wahi hassain</option><option value="Wan radha ram">Wan radha ram</option><option value="Warah">Warah</option><option value="Warburton">Warburton</option><option value="Wazirabad">Wazirabad</option><option value="Yazman mandi">Yazman mandi</option><option value="Ukba">Ukba</option><option value="Ugoki">Ugoki</option><option value="Ubauro">Ubauro</option><option value="Tharo shah">Tharo shah</option><option value="Theing jattan more">Theing jattan more</option><option value="Thull">Thull</option><option value="Tibba sultanpur">Tibba sultanpur</option><option value="Tobatek singh">Tobatek singh</option><option value="Topi">Topi</option><option value="Toru">Toru</option><option value="Trinda mohd pannah">Trinda mohd pannah</option><option value="Turbat">Turbat</option><option value="Ubaro">Ubaro</option><option value="Zahir pir">Zahir pir</option><option value="Shedani sharif">Shedani sharif</option><option value="Phool nagar">Phool nagar</option><option value="Rajana">Rajana</option><option value="Rajanpur">Rajanpur</option><option value="Rangoo">Rangoo</option><option value="Ranipur">Ranipur</option><option value="Ratto dero">Ratto dero</option><option value="Rawala kot">Rawala kot</option><option value="Rawat">Rawat</option><option value="Renala khurd">Renala khurd</option><option value="Risalpur">Risalpur</option><option value="Rohri">Rohri</option><option value="Raiwand">Raiwand</option><option value="Rahwali">Rahwali</option><option value="Rabwah">Rabwah</option><option value="Piaro goth">Piaro goth</option><option value="Pindi bhohri">Pindi bhohri</option><option value="Pindi dadan khan">Pindi dadan khan</option><option value="Pindi gheb">Pindi gheb</option><option value="Pir mahal">Pir mahal</option><option value="Pishin">Pishin</option><option value="Qalandarabad">Qalandarabad</option><option value="Qasba gujrat">Qasba gujrat</option><option value="Qazi ahmed">Qazi ahmed</option><option value="Quaidabad">Quaidabad</option><option value="Sagri">Sagri</option><option value="Saidu sharif">Saidu sharif</option><option value="Satyana bangla">Satyana bangla</option><option value="Sehar baqlas">Sehar baqlas</option><option value="Serai alamgir">Serai alamgir</option><option value="Shadiwal">Shadiwal</option><option value="Shah kot">Shah kot</option><option value="Shahdad kot">Shahdad kot</option><option value="Shahdad pur">Shahdad pur</option><option value="Shahpur chakar">Shahpur chakar</option><option value="Shaikhupura">Shaikhupura</option><option value="Shamsabad">Shamsabad</option><option value="Sara e naurang">Sara e naurang</option><option value="Sara e alamgir">Sara e alamgir</option><option value="Sanjwal">Sanjwal</option><option value="Sajawal">Sajawal</option><option value="Sakrand">Sakrand</option><option value="Samanabad">Samanabad</option><option value="Sambrial">Sambrial</option><option value="Samma satta">Samma satta</option><option value="Samundri">Samundri</option><option value="Sanghar">Sanghar</option><option value="Sanghi">Sanghi</option><option value="Sangla hill">Sangla hill</option><option value="Sangote">Sangote</option><option value="Shankiari">Shankiari</option><option value="Bat khela">Bat khela</option><option value="Chak jamal">Chak jamal</option><option value="Chak jhumra">Chak jhumra</option><option value="Chak sawara">Chak sawara</option><option value="Chak sheza">Chak sheza</option><option value="Chakwal">Chakwal</option><option value="Charsada">Charsada</option><option value="Chashma">Chashma</option><option value="Chawinda">Chawinda</option><option value="Chicha watni">Chicha watni</option><option value="Chiniot">Chiniot</option><option value="Chak 46">Chak 46</option><option value="Chak 4 b c">Chak 4 b c</option><option value="Chaininda">Chaininda</option><option value="Bhai pheru">Bhai pheru</option><option value="Bhalwal">Bhalwal</option><option value="Bhan saeedabad">Bhan saeedabad</option><option value="Bhera">Bhera</option><option value="Bhimbar">Bhimbar</option><option value="Bhirya road">Bhirya road</option><option value="Bhuawana">Bhuawana</option><option value="Blitang">Blitang</option><option value="Buchay key">Buchay key</option><option value="Chacklala">Chacklala</option><option value="Chishtian">Chishtian</option><option value="Chohar jamali">Chohar jamali</option><option value="Daska">Daska</option><option value="Daud khel">Daud khel</option><option value="Daulat pur">Daulat pur</option><option value="Deh pathaan">Deh pathaan</option><option value="Depal pur">Depal pur</option><option value="Dera ghazi khan">Dera ghazi khan</option><option value="Dera murad jamali">Dera murad jamali</option><option value="Dera nawab sahib">Dera nawab sahib</option><option value="Dhatmal">Dhatmal</option><option value="Dhoun kal">Dhoun kal</option><option value="Darya khan">Darya khan</option><option value="Dargai">Dargai</option><option value="Dandot">Dandot</option><option value="Choppar hatta">Choppar hatta</option><option value="Chowha saidan shah">Chowha saidan shah</option><option value="Chowk azam">Chowk azam</option><option value="Chowk mailta">Chowk mailta</option><option value="Chowk munda">Chowk munda</option><option value="Chunian">Chunian</option><option value="Dadakhel">Dadakhel</option><option value="Dadu">Dadu</option><option value="Dadyal A.K.">Dadyal A.K.</option><option value="Daharki">Daharki</option><option value="Digri">Digri</option><option value="Gujrat">Gujrat</option><option value="Sadiqabad">Sadiqabad</option><option value="Kotli Azad Kashmir">Kotli Azad Kashmir</option><option value="Khanewal">Khanewal</option><option value="Mardan">Mardan</option><option value="Vehari">Vehari</option><option value="Sakhar">Sakhar</option><option value="Hafizabad">Hafizabad</option><option value="Shekhupura">Shekhupura</option><option value="Jhang">Jhang</option><option value="Bannu">Bannu</option><option value="Kharian">Kharian</option><option value="Burewala">Burewala</option><option value="Bahawalnagar">Bahawalnagar</option><option value="Gujranwala">Gujranwala</option><option value="Sahiwaal">Sahiwaal</option><option value="Bhakkar">Bhakkar</option><option value="Sialkot">Sialkot</option><option value="Sargodha">Sargodha</option><option value="Khushab">Khushab</option><option value="Kohat">Kohat</option><option value="Wah cantt">Wah cantt</option><option value="D-I-Khan">D-I-Khan</option><option value="Talagang">Talagang</option><option value="Nowshera">Nowshera</option><option value="Okara">Okara</option><option value="Akhora khattak">Akhora khattak</option><option value="Ali chak">Ali chak</option><option value="Allahabad">Allahabad</option><option value="Amangarh">Amangarh</option><option value="Arifwala">Arifwala</option><option value="Babri banda">Babri banda</option><option value="Badin">Badin</option><option value="Bahawalpur">Bahawalpur</option><option value="Balakot">Balakot</option><option value="Barbar loi">Barbar loi</option><option value="Adda shaiwala">Adda shaiwala</option><option value="Adda jahan khan">Adda jahan khan</option><option value="Abdul hakim">Abdul hakim</option><option value="Attock">Attock</option><option value="Thatta">Thatta</option><option value="Gwadar">Gwadar</option><option value="Chitral">Chitral</option><option value="Swat">Swat</option><option value="Kasur">Kasur</option><option value="Rahimyar Khan">Rahimyar Khan</option><option value="Ghotki">Ghotki</option><option value="Larkana">Larkana</option><option value="Mirpur">Mirpur</option><option value="Baroute">Baroute</option><option value="Dijkot">Dijkot</option><option value="Hub inds estate">Hub inds estate</option><option value="Jauharabad">Jauharabad</option><option value="Jehangira">Jehangira</option><option value="Jehanian">Jehanian</option><option value="Jhal Magsi">Jhal Magsi</option><option value="Jhand">Jhand</option><option value="Jhatta bhutta">Jhatta bhutta</option><option value="Jhelum">Jhelum</option><option value="Jhudo">Jhudo</option><option value="Kabir wala">Kabir wala</option><option value="Kacha khooh">Kacha khooh</option><option value="Jaranwala">Jaranwala</option><option value="Jandanwala">Jandanwala</option><option value="Jan pur">Jan pur</option><option value="Hub-Balochistan">Hub-Balochistan</option><option value="Hunza">Hunza</option><option value="Issa khel">Issa khel</option><option value="Jaccobabad">Jaccobabad</option><option value="Jaja abasian">Jaja abasian</option><option value="Jalal pur jatan">Jalal pur jatan</option><option value="Jalal pur priwala">Jalal pur priwala</option><option value="Jampur">Jampur</option><option value="Jamrud road">Jamrud road</option><option value="Jamshoro">Jamshoro</option><option value="Kahuta">Kahuta</option><option value="Kakul">Kakul</option><option value="Karak">Karak</option><option value="Karoor pacca">Karoor pacca</option><option value="Karore lalisan">Karore lalisan</option><option value="Kashmir">Kashmir</option><option value="Kashmore">Kashmore</option><option value="Kazi ahmed">Kazi ahmed</option><option value="Khairpur">Khairpur</option><option value="Khan qah sharif">Khan qah sharif</option><option value="Khanbel">Khanbel</option><option value="Khandabad">Khandabad</option><option value="Kandiaro">Kandiaro</option><option value="Kandh kot">Kandh kot</option><option value="Kamra">Kamra</option><option value="Kakur town">Kakur town</option><option value="Kala bagh">Kala bagh</option><option value="Kala shah kaku">Kala shah kaku</option><option value="Kalar syedian">Kalar syedian</option><option value="Kalaswala">Kalaswala</option><option value="Kallur kot">Kallur kot</option><option value="Kamalia">Kamalia</option><option value="Kamalia musa">Kamalia musa</option><option value="Kamber ali khan">Kamber ali khan</option><option value="Kamokey">Kamokey</option><option value="Khangarh">Khangarh</option><option value="Dina">Dina</option><option value="Feteh jhang">Feteh jhang</option><option value="Fiza got">Fiza got</option><option value="Gadoon amazai">Gadoon amazai</option><option value="Gaggo mandi">Gaggo mandi</option><option value="Gakhar mandi">Gakhar mandi</option><option value="Gambat">Gambat</option><option value="Gambet">Gambet</option><option value="Garh maharaja">Garh maharaja</option><option value="Garh more">Garh more</option><option value="Garhi yaseen">Garhi yaseen</option><option value="Feroz watan">Feroz watan</option><option value="Feroz walla">Feroz walla</option><option value="Fateh pur">Fateh pur</option><option value="Dinga">Dinga</option><option value="Dir">Dir</option><option value="Doaaba">Doaaba</option><option value="Doltala">Doltala</option><option value="Domeli">Domeli</option><option value="Dudial">Dudial</option><option value="Dunyapur">Dunyapur</option><option value="Eminabad">Eminabad</option><option value="Estate l.m factory">Estate l.m factory</option><option value="Farooqabad">Farooqabad</option><option value="Gari habibullah">Gari habibullah</option><option value="Gari mori">Gari mori</option><option value="Hariwala">Hariwala</option><option value="Haroonabad">Haroonabad</option><option value="Hasilpur">Hasilpur</option><option value="Hassan abdal">Hassan abdal</option><option value="Hattar">Hattar</option><option value="Hattian lawrencepur">Hattian lawrencepur</option><option value="Haveli lakha">Haveli lakha</option><option value="Havelian">Havelian</option><option value="Hayatabad">Hayatabad</option><option value="Hazro">Hazro</option><option value="Head marala">Head marala</option><option value="Hari pur">Hari pur</option><option value="Hangu">Hangu</option><option value="Gharo">Gharo</option><option value="Ghazi">Ghazi</option><option value="Gilgit">Gilgit</option><option value="Gohar ghoushti">Gohar ghoushti</option><option value="Gojar khan">Gojar khan</option><option value="Gojra">Gojra</option><option value="Goular khel">Goular khel</option><option value="Guddu">Guddu</option><option value="Gujjar khan">Gujjar khan</option><option value="Hala">Hala</option><option value="Hub">Hub</option></select>
+                                                                <input type="text" class="form-control" id="city-textbox-caterer-update" style="display:none">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="col-md-12">
+                                                        <div class="form-group form-group1">
+                                                            <label class="col-sm-3 control-lable">Buffet Per Head <span class="form-required" title="This field is required.">*</span></label>
+                                                            <div class="clearfix"></div>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" id="rate" name="rate" style="height:42px;" onkeypress="return isNumberKey(event);">
+                                                                <span class="input-group-addon">
+                                                                    <select style="width:70px;" id="caterer-currency">
+                                                                        <option value="PKR">PKR</option>
+                                                                        <option value="USD">USD</option>
+                                                                    </select>
+                                                                </span>
+                                                            </div>
+                                                            <div class="clearfix"></div>
+                                                            <small><b>Note : </b>Estimated</small>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <hr>
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <div class="form-group form-group1">
+                                                            <label class="col-sm-4 control-lable">Speciality (Dishes)</label>
+                                                            <div class="clearfix"></div>
+                                                            <div class="select-block1" id="city-div">
+                                                                <textarea class="form-control" style="resize: none;height:100px;"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="edit-name">Office Contact</label>
+                                                            <input type="text" name="officecontact" value="" id="office-contact" size="60" maxlength="60" class="form-text">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label for="edit-name">Office Hours</label>
+                                                            <input type="text" name="starthours" value="" size="60" maxlength="60" class="form-control timepicker" id="timestarthall">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <span>To</span>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <div class="form-group">
+                                                            <label for="edit-name">&nbsp;</label>
+                                                            <input type="text" name="endhours" value="" size="60" maxlength="60" class="form-text timepicker" id="timeendhall">
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="edit-name">Website URL</label>
+                                                            <input type="text" name="website" value="" id="website" size="60" maxlength="60" class="form-text">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label for="edit-name">Facebook Page</label>
+                                                            <input type="text" name="facebookpage" value="" id="facebookpage" size="60" maxlength="60" class="form-text">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <label for="edit-name">GPS Coordinates</label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="edit-name">Longitude</label>
+                                                            <input type="number" name="longitude" value="" size="60" maxlength="60" class="form-control" id="timestarthall">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="edit-name">Latitude</label>
+                                                            <input type="number" name="latitude" value="" size="60" maxlength="60" class="form-text" id="timeendhall">
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+
+                                                    <div class="clearfix"></div>
+
+                                                    <div class="col-md-12">
+                                                        <div class="form-actions">
+                                                            <input type="submit" id="btn-update-caterer" name="op" value="Update" class="btn_1 submit">
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="clearfix"> </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div id="pictures-update-caterer" class="tab-pane">
+                                    <div id="pictures-update-area">
+                                        <div class="col-sm-12 login_left">
+                                            <div class="row">
+                                                <div class="col-sm-4" style="margin-top: 30px;">
+                                                    <label>Image 1 :</label>
+                                                </div>
+                                                <div class="col-sm-5" style="margin-top: 30px;">
+                                                    <input type="file" id="caterer-update-img1" accept="image/*"  />
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <img class="right" src="~/Content/images/No-image-found.jpg" style="width:100px;height:100px;"></div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <hr />
+                                            <div class="row">
+                                                <div class="col-sm-4" style="margin-top: 30px;">
+                                                    <label>Image 2 :</label>
+                                                </div>
+                                                <div class="col-sm-5" style="margin-top: 30px;">
+                                                    <input type="file" id="caterer-update-img2" accept="image/*" />
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <img class="right" src="~/Content/images/No-image-found.jpg" style="width:100px;height:100px;">
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <hr />
+                                            <div class="row">
+                                                <div class="col-sm-4" style="margin-top: 30px;">
+                                                    <label>Image 3 :</label>
+                                                </div>
+                                                <div class="col-sm-5" style="margin-top: 30px;">
+                                                    <input type="file" id="caterer-update-img3" accept="image/*" />
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <img class="right" src="~/Content/images/No-image-found.jpg" style="width:100px;height:100px;">
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <hr />
+                                            <div class="row">
+                                                <div class="col-sm-4" style="margin-top: 30px;">
+                                                    <label>Image 4 :</label>
+                                                </div>
+                                                <div class="col-sm-5" style="margin-top: 30px;">
+                                                    <input type="file" id="caterer-update-img4" accept="image/*" />
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <img class="right" src="~/Content/images/No-image-found.jpg" style="width:100px;height:100px;">
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <hr />
+                                            <div class="row">
+                                                <div class="col-sm-4" style="margin-top: 30px;">
+                                                    <label>Image 5 :</label>
+                                                </div>
+                                                <div class="col-sm-5" style="margin-top: 30px;">
+                                                    <input type="file" id="caterer-update-img5" accept="image/*" />
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <img class="right" src="~/Content/images/No-image-found.jpg" style="width:100px;height:100px;">
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <hr />
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                    <div id="change-password-caterer" class="tab-pane">
+                                        <div id="change-password-update-area">
+                                            <div style="margin-top:20px;">
+                                                <div class="col-sm-12 login_left">
+
+                                                    <form id="caterer-password-update-form" action="\Account\Registration" method="post" novalidate="novalidate">
+
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="oldpassword">Old Password</label>
+                                                                <input type="password" name="oldpassword" value="" size="60" maxlength="60" class="form-text">
+                                                            </div>
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="newpasswordedit-name">New Password</label>
+                                                                <input type="password" id="password-caterer-update" name="newpassword" value="" size="60" maxlength="60" class="form-text">
+                                                            </div>
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="confirmpassword">Confirm Password</label>
+                                                                <input type="password" name="confirmpassword" value="" size="60" maxlength="60" class="form-text">
+                                                            </div>
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-actions">
+                                                                <input type="submit" id="btn-submit-changepassword-caterer" name="op" value="Update" class="btn_1 submit">
+                                                            </div>
+                                                        </div>
+
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                        </div>
+
+                        <!--End    -->
+
+                    </div>
+                    <div class="modal-footer">
+                        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success" id="contact-submit" data-email="">Submit</button>-->
+                    </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

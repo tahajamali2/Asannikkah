@@ -1,0 +1,537 @@
+﻿@model AsanNikkah.Orm_Tool.Views.All_Account 
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/ClientPanelLayout.cshtml";
+}
+
+@if (@Model == null)
+{
+    @section Menu {
+        <ul class="nav navbar-nav nav_1">
+            <li><a href="/Home/Index">Home</a></li>
+
+            <li>
+                <a href="/Halls/Index">
+                    Hall &amp;
+
+                    Banquets
+                </a>
+            </li>
+            <li>
+                <a href="/Caterers/Index">Caterers</a>
+            </li>
+            <li><a href="/Aboutus/Index">About</a></li>
+            <!--<li class="dropdown">
+                                              <a href="#" class="dropdown-toggle" data-
+
+            toggle="dropdown">Matches<span class="caret"></span></a>
+                                              <ul class="dropdown-menu" role="menu">
+                                                <li><a href="matches.html">New
+
+            Matches</a></li>
+                                                <li><a href="viewed-profile.html">Who
+
+            Viewed my Profile</a></li>
+                                                <li><a href="viewed-
+
+            not_contacted.html">Viewed & not Contacted</a></li>
+                                                <li><a href="members.html">Premium
+
+            Members</a></li>
+                                                <li><a
+
+            href="shortlisted.html">Shortlisted Profile</a></li>
+                                              </ul>
+                                            </li>-->
+            <!--<li class="dropdown">
+                                              <a href="#" class="dropdown-toggle" data-
+
+            toggle="dropdown">Search<span class="caret"></span></a>
+                                              <ul class="dropdown-menu" role="menu">
+                                                <li><a href="search.html">Regular
+
+            Search</a></li>
+                                                <li><a href="profile.html">Recently
+
+            Viewed Profiles</a></li>
+                                                <li><a href="search-id.html">Search By
+
+            Profile ID</a></li>
+                                                <li><a href="faq.html">Faq</a></li>
+                                                <li><a
+
+            href="shortcodes.html">Shortcodes</a></li>
+                                              </ul>
+                                            </li>-->
+            <li>
+                <a href="/Contactus/Index">
+                    Contact
+
+                    Us
+                </a>
+            </li>
+
+            <li style="background-color:#ffa417 !important;">
+                <a href="/Account/Login">
+                    Login
+                </a>
+            </li>
+
+        </ul>
+    }
+}
+
+else
+{
+    @section Menu {
+        <ul class="nav navbar-nav nav_1">
+            <li><a href="/Home/Index">Home</a></li>
+            @if (@Model.ProfileType == "M")
+            {
+                <li><a href="/Profiles/Index">Profiles</a></li>
+            }
+            <li><a href="/Halls/Index">Hall &amp; Banquets</a></li>
+            <li><a href="/Caterers/Index">Caterers</a></li>
+            @if (@Model.ProfileType == "M")
+            {
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Messages<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Messages/Index">Inbox</a></li>
+                    </ul>
+                </li>
+            }
+            <li><a href="/Aboutus/Index">About</a></li>
+            <!--<li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Matches<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="matches.html">New Matches</a></li>
+                <li><a href="viewed-profile.html">Who Viewed my Profile</a></li>
+                <li><a href="viewed-not_contacted.html">Viewed & not Contacted</a></li>
+                <li><a href="members.html">Premium Members</a></li>
+                <li><a href="shortlisted.html">Shortlisted Profile</a></li>
+              </ul>
+            </li>-->
+            <!--<li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Search<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="search.html">Regular Search</a></li>
+                <li><a href="profile.html">Recently Viewed Profiles</a></li>
+                <li><a href="search-id.html">Search By Profile ID</a></li>
+                <li><a href="faq.html">Faq</a></li>
+                <li><a href="shortcodes.html">Shortcodes</a></li>
+              </ul>
+            </li>-->
+            <li><a href="/Contactus/Index">Contact Us</a></li>
+            <li class="last dropdown" style="cursor:pointer">
+                <a class="dropdown-toggle" data-toggle="dropdown"><img src="@Model.Img" width="32px" height="32px"><b style="font-size:18px">@Model.Name<span class="caret"></span></b></a>
+                <ul class="dropdown-menu user-li" role="menu" style="display: none;">
+                    <li><a href="#">My Profile</a></li>
+                    <li><a href="/Account/Logout">Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    }
+}
+
+<div class="grid_3">
+    <div class="container">
+        <div class="breadcrumb1">
+            <ul>
+                <a href="index.html"><i class="fa fa-home home_1"></i></a>
+                <span class="divider">&nbsp;|&nbsp;</span>
+                <li class="current-page">Caterers</li>
+            </ul>
+        </div>
+
+
+        <div class="col-md-12 profile_left2">
+
+            <div class="profile_top">
+
+                <div class="form_but2">
+                    <label class="col-md-2 control-lable1" for="sex">Filter : </label>
+
+                    <div class="col-md-1 form_radios">
+                        <label>Country : </label>
+                    </div>
+                    <div class="col-md-2 form_radios">
+                        <select class="form-control">
+                            <option value="">-- Select -- </option>
+                            <option value="1">Afghanistan</option>
+                            <option value="3">Algeria</option>
+                            <option value="5">Andorra</option>
+                            <option value="14">Australia</option>
+                            <option value="15">Austria</option>
+                            <option value="16">Azerbaijan</option>
+                            <option value="18">Bahrain</option>
+                            <option value="20">Bangladesh</option>
+                            <option value="24">Belgium</option>
+                            <option value="28">Bhutan</option>
+                            <option value="29">Bolivia</option>
+                            <option value="30">Bosnia and Herzegovina</option>
+                            <option value="31">Botswana</option>
+                            <option value="32">Bouvet Island</option>
+                            <option value="33">Brazil</option>
+                            <option value="34">British Indian Ocean Territory</option>
+                            <option value="35">British Virgin Islands</option>
+                            <option value="36">Brunei Darussalam</option>
+                            <option value="37">Bulgaria</option>
+                            <option value="38">Burkina Faso</option>
+                            <option value="39">Burma</option>
+                            <option value="40">Burundi</option>
+                            <option value="41">Cambodia</option>
+                            <option value="42">Cameroon</option>
+                            <option value="43">Canada</option>
+                            <option value="44">Cape Verde</option>
+                            <option value="45">Cayman Islands</option>
+                            <option value="46">Central African Republic</option>
+                            <option value="47">Chad</option>
+                            <option value="48">Chile</option>
+                            <option value="49">China</option>
+                            <option value="63">Cyprus</option>
+                            <option value="64">Czech Republic</option>
+                            <option value="65">Denmark</option>
+                            <option value="71">Egypt</option>
+                            <option value="81">Finland</option>
+                            <option value="82">France</option>
+                            <option value="91">Germany</option>
+                            <option value="93">Gibraltar</option>
+                            <option value="95">Greece</option>
+                            <option value="109">Hong Kong (SAR)</option>
+                            <option value="111">Hungary</option>
+                            <option value="112">Iceland</option>
+                            <option value="113">India</option>
+                            <option value="114">Indonesia</option>
+                            <option value="115">Iran</option>
+                            <option value="116">Iraq</option>
+                            <option value="117">Ireland</option>
+                            <option value="118">Israel</option>
+                            <option value="119">Italy</option>
+                            <option value="122">Japan</option>
+                            <option value="126">Jordan</option>
+                            <option value="128">Kazakhstan</option>
+                            <option value="129">Kenya</option>
+                            <option value="132">Korea, North</option>
+                            <option value="133">Korea, South</option>
+                            <option value="134">Kuwait</option>
+                            <option value="138">Lebanon</option>
+                            <option value="141">Libya</option>
+                            <option value="149">Malaysia</option>
+                            <option value="150">Maldives</option>
+                            <option value="151">Mali</option>
+                            <option value="153">Man, Isle of</option>
+                            <option value="156">Mauritania</option>
+                            <option value="157">Mauritius</option>
+                            <option value="159">Mexico</option>
+                            <option value="174">Nepal</option>
+                            <option value="175">Netherlands</option>
+                            <option value="178">New Zealand</option>
+                            <option value="181">Nigeria</option>
+                            <option value="185">Norway</option>
+                            <option value="186">Oman</option>
+                            <option value="187" selected="">Pakistan</option>
+                            <option value="190">Panama</option>
+                            <option value="194">Peru</option>
+                            <option value="195">Philippines</option>
+                            <option value="197">Poland</option>
+                            <option value="198">Portugal</option>
+                            <option value="200">Qatar</option>
+                            <option value="202">Romania</option>
+                            <option value="203">Russia</option>
+                            <option value="213">Saudi Arabia</option>
+                            <option value="214">Senegal</option>
+                            <option value="215">Serbia</option>
+                            <option value="219">Singapore</option>
+                            <option value="223">Somalia</option>
+                            <option value="224">South Africa</option>
+                            <option value="226">Spain</option>
+                            <option value="228">Sri Lanka</option>
+                            <option value="229">Sudan</option>
+                            <option value="232">Swaziland</option>
+                            <option value="233">Sweden</option>
+                            <option value="234">Switzerland</option>
+                            <option value="235">Syria</option>
+                            <option value="236">Taiwan</option>
+                            <option value="237">Tajikistan</option>
+                            <option value="238">Tanzania</option>
+                            <option value="239">Thailand</option>
+                            <option value="245">Tunisia</option>
+                            <option value="246">Turkey</option>
+                            <option value="247">Turkmenistan</option>
+                            <option value="250">Uganda</option>
+                            <option value="251">Ukraine</option>
+                            <option value="252">United Arab Emirates</option>
+                            <option value="253">United Kingdom</option>
+                            <option value="254">United States</option>
+                            <option value="257">Uzbekistan</option>
+                            <option value="260">Vietnam</option>
+                            <option value="269">World</option>
+                            <option value="270">Yemen</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1 form_radios">
+                        <label>City : </label>
+                    </div>
+
+                    <div class="col-md-2 form_radios">
+                        <select class="form-control">
+                            <option value="">-- Select --</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2 form_radios">
+                        <button type="submit" class="btn btn-success">
+                            Search <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </div>
+                    <div class="clearfix"> </div>
+                    <div class="col-sm-12"><hr></div>
+                    <div class="clearfix"> </div>
+
+                    <h2>Showbiz Kitchen</h2>
+                    <div class="col-sm-2 profile_left-top">
+                        <img src="~/Content/images/a5.jpg" class="img-responsive" alt="" />
+                        <div class="rateYo" data-rating="1.1"></div>
+                    </div>
+                    <div class="col-sm-2">
+                        <a href="#" class="hvr-shutter-out-horizontal" style="padding-right:46px;font-size:12px;">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Feedback
+                        </a>
+                        <div class="clear-fix"></div>
+                        <a href="#" class="hvr-shutter-out-horizontal" style="font-size:12px;">
+                            <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;Contact us
+                        </a>
+                    </div>
+                    <div class="col-sm-5">
+                        <table class="table_working_hours">
+                            <tbody>
+                                <tr class="opened_1">
+                                    <td class="day_label1">Buffet Per Head :</td>
+                                    <td class="day_value">120 PKR</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label1">Contact :</td>
+                                    <td class="day_value">090078601 , 090078601</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label1">Office Hours :</td>
+                                    <td class="day_value">10:00 AM To 05:00 PM</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label1">Country :</td>
+                                    <td class="day_value">Pakistan</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label1">City :</td>
+                                    <td class="day_value">Hyderabad</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-sm-3">
+                        <iframe src="https://www.google.com/maps?q=Hyderabad, Sindh, Pakistan&output=embed"> </iframe>
+                    </div>
+                    <div class="clearfix"> </div>
+                    <div class="col-sm-12"><hr></div>
+                </div>
+                <div class="profile_top">
+                    <h2>Perl Caterers</h2>
+                    <div class="col-sm-2 profile_left-top">
+                        <img src="~/Content/images/a6.jpg" class="img-responsive" alt="" />
+                        <div class="rateYo" data-rating="2.1"></div>
+                    </div>
+                    <div class="col-sm-2">
+                        <a href="#" class="hvr-shutter-out-horizontal" style="padding-right:46px;font-size:12px;">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Feedback
+                        </a>
+                        <div class="clear-fix"></div>
+                        <a href="#" class="hvr-shutter-out-horizontal" style="font-size:12px;">
+                            <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;Contact us
+                        </a>
+                    </div>
+                    <div class="col-sm-5">
+                        <table class="table_working_hours">
+                            <tbody>
+                                <tr class="opened_1">
+                                    <td class="day_label1">Buffet Per Head :</td>
+                                    <td class="day_value">120 PKR</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label1">Contact :</td>
+                                    <td class="day_value">090078601 , 090078601</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label1">Office Hours :</td>
+                                    <td class="day_value">10:00 AM To 05:00 PM</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label1">Country :</td>
+                                    <td class="day_value">Pakistan</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label1">City :</td>
+                                    <td class="day_value">Hyderabad</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-sm-3">
+                        <iframe src="https://www.google.com/maps?q=Hyderabad, Sindh, Pakistan&output=embed"> </iframe>
+                    </div>
+                    <div class="clearfix"> </div>
+                    <div class="col-sm-12"><hr></div>
+                </div>
+                <div class="profile_top">
+                    <h2>Magnum Caterers</h2>
+                    <div class="col-sm-2 profile_left-top">
+                        <img src="~/Content/images/a7.jpg" class="img-responsive" alt="">
+                        <div class="rateYo" data-rating="3.1"></div>
+                    </div>
+                    <div class="col-sm-2">
+                        <a href="#" class="hvr-shutter-out-horizontal" style="padding-right:46px;font-size:12px;">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Feedback
+                        </a>
+                        <div class="clear-fix"></div>
+                        <a href="#" class="hvr-shutter-out-horizontal" style="font-size:12px;">
+                            <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;Contact us
+                        </a>
+                    </div>
+                    <div class="col-sm-5">
+                        <table class="table_working_hours">
+                            <tbody>
+                                <tr class="opened_1">
+                                    <td class="day_label1">Buffet Per Head :</td>
+                                    <td class="day_value">120 PKR</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label1">Contact :</td>
+                                    <td class="day_value">090078601 , 090078601</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label1">Office Hours :</td>
+                                    <td class="day_value">10:00 AM To 05:00 PM</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label1">Country :</td>
+                                    <td class="day_value">Pakistan</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label1">City :</td>
+                                    <td class="day_value">Hyderabad</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-sm-3">
+                        <iframe src="https://www.google.com/maps?q=Hyderabad, Sindh, Pakistan&output=embed"> </iframe>
+                    </div>
+                    <div class="clearfix"> </div>
+                    <div class="col-sm-12"><hr></div>
+                </div>
+                <div class="profile_top">
+                    <h2>Ruby Kitchen</h2>
+                    <div class="col-sm-2 profile_left-top">
+                        <img src="~/Content/images/a5.jpg" class="img-responsive" alt="" />
+                        <div class="rateYo" data-rating="4.1"></div>
+                    </div>
+                    <div class="col-sm-2">
+                        <a href="#" class="hvr-shutter-out-horizontal" style="padding-right:46px;font-size:12px;">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Feedback
+                        </a>
+                        <div class="clear-fix"></div>
+                        <a href="#" class="hvr-shutter-out-horizontal" style="font-size:12px;">
+                            <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;Contact us
+                        </a>
+                    </div>
+                    <div class="col-sm-5">
+                        <table class="table_working_hours">
+                            <tbody>
+                                <tr class="opened_1">
+                                    <td class="day_label1">Buffet Per Head :</td>
+                                    <td class="day_value">220 PKR</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label1">Contact :</td>
+                                    <td class="day_value">090078601 , 090078601</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label1">Office Hours :</td>
+                                    <td class="day_value">05:00 PM To 09:00 PM</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label1">Country :</td>
+                                    <td class="day_value">Pakistan</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label1">City :</td>
+                                    <td class="day_value">Hyderabad</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-sm-3">
+                        <iframe src="https://www.google.com/maps?q=Hyderabad, Sindh, Pakistan&output=embed"> </iframe>
+                    </div>
+                    <div class="clearfix"> </div>
+                    <div class="col-sm-12"><hr></div>
+                </div>
+                <div class="profile_top profile_top1">
+                    <h2>Qasim Caterers</h2>
+                    <div class="col-sm-2 profile_left-top">
+                        <img src="~/Content/images/a8.jpg" class="img-responsive" alt="" />
+                        <div class="rateYo" data-rating="3.9"></div>
+                    </div>
+                    <div class="col-sm-2">
+                        <a href="#" class="hvr-shutter-out-horizontal" style="padding-right:46px;font-size:12px;">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Feedback
+                        </a>
+                        <div class="clear-fix"></div>
+                        <a href="#" class="hvr-shutter-out-horizontal" style="font-size:12px;">
+                            <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;Contact us
+                        </a>
+                    </div>
+                    <div class="col-sm-5">
+                        <table class="table_working_hours">
+                            <tbody>
+                                <tr class="opened_1">
+                                    <td class="day_label1">Buffet Per Head :</td>
+                                    <td class="day_value">300 PKR</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label1">Contact :</td>
+                                    <td class="day_value">090078601 , 090078601</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label1">Office Hours :</td>
+                                    <td class="day_value">12:00 PM To 05:00 PM</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label1">Country :</td>
+                                    <td class="day_value">Pakistan</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label1">City :</td>
+                                    <td class="day_value">Hyderabad</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-sm-3">
+                        <iframe src="https://www.google.com/maps?q=Hyderabad, Sindh, Pakistan&output=embed"> </iframe>
+                    </div>
+                    <div class="clearfix"> </div>
+                    <div class="col-sm-12"><hr></div>
+                </div>
+                <ul class="pagination">
+                    <li class="active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                </ul>
+            </div>
+
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+

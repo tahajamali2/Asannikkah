@@ -1,0 +1,184 @@
+﻿@model AsanNikkah.Orm_Tool.Views.All_Account 
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/ClientPanelLayout.cshtml";
+}
+
+@if (@Model == null)
+{
+    @section Menu {
+        <ul class="nav navbar-nav nav_1">
+            <li><a href="/Home/Index">Home</a></li>
+
+            <li>
+                <a href="/Halls/Index">
+                    Hall &amp;
+
+                    Banquets
+                </a>
+            </li>
+            <li>
+                <a href="/Caterers/Index">Caterers</a>
+            </li>
+            <li><a href="/Aboutus/Index">About</a></li>
+            <!--<li class="dropdown">
+                                              <a href="#" class="dropdown-toggle" data-
+
+            toggle="dropdown">Matches<span class="caret"></span></a>
+                                              <ul class="dropdown-menu" role="menu">
+                                                <li><a href="matches.html">New
+
+            Matches</a></li>
+                                                <li><a href="viewed-profile.html">Who
+
+            Viewed my Profile</a></li>
+                                                <li><a href="viewed-
+
+            not_contacted.html">Viewed & not Contacted</a></li>
+                                                <li><a href="members.html">Premium
+
+            Members</a></li>
+                                                <li><a
+
+            href="shortlisted.html">Shortlisted Profile</a></li>
+                                              </ul>
+                                            </li>-->
+            <!--<li class="dropdown">
+                                              <a href="#" class="dropdown-toggle" data-
+
+            toggle="dropdown">Search<span class="caret"></span></a>
+                                              <ul class="dropdown-menu" role="menu">
+                                                <li><a href="search.html">Regular
+
+            Search</a></li>
+                                                <li><a href="profile.html">Recently
+
+            Viewed Profiles</a></li>
+                                                <li><a href="search-id.html">Search By
+
+            Profile ID</a></li>
+                                                <li><a href="faq.html">Faq</a></li>
+                                                <li><a
+
+            href="shortcodes.html">Shortcodes</a></li>
+                                              </ul>
+                                            </li>-->
+            <li>
+                <a href="/Contactus/Index">
+                    Contact
+
+                    Us
+                </a>
+            </li>
+
+            <li style="background-color:#ffa417 !important;">
+                <a href="/Account/Login">
+                    Login
+                </a>
+            </li>
+
+        </ul>
+    }
+}
+
+else
+{
+    @section Menu {
+        <ul class="nav navbar-nav nav_1">
+            <li><a href="/Home/Index">Home</a></li>
+            @if (@Model.ProfileType == "M")
+            {
+                <li><a href="/Profiles/Index">Profiles</a></li>
+            }
+            <li><a href="/Halls/Index">Hall &amp; Banquets</a></li>
+            <li><a href="/Caterers/Index">Caterers</a></li>
+            @if (@Model.ProfileType == "M")
+            {
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Messages<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Messages/Index">Inbox</a></li>
+                    </ul>
+                </li>
+            }
+            <li><a href="/Aboutus/Index">About</a></li>
+            <!--<li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Matches<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="matches.html">New Matches</a></li>
+                <li><a href="viewed-profile.html">Who Viewed my Profile</a></li>
+                <li><a href="viewed-not_contacted.html">Viewed & not Contacted</a></li>
+                <li><a href="members.html">Premium Members</a></li>
+                <li><a href="shortlisted.html">Shortlisted Profile</a></li>
+              </ul>
+            </li>-->
+            <!--<li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Search<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="search.html">Regular Search</a></li>
+                <li><a href="profile.html">Recently Viewed Profiles</a></li>
+                <li><a href="search-id.html">Search By Profile ID</a></li>
+                <li><a href="faq.html">Faq</a></li>
+                <li><a href="shortcodes.html">Shortcodes</a></li>
+              </ul>
+            </li>-->
+            <li><a href="/Contactus/Index">Contact Us</a></li>
+            <li class="last dropdown" style="cursor:pointer">
+                <a class="dropdown-toggle" data-toggle="dropdown"><img src="@Model.Img" width="32px" height="32px"><b style="font-size:18px">@Model.Name<span class="caret"></span></b></a>
+                <ul class="dropdown-menu user-li" role="menu" style="display: none;">
+                    <li><a href="#">My Profile</a></li>
+                    <li><a href="/Account/Logout">Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    }
+}
+
+<div class="grid_3">
+    <div class="container">
+        <div class="breadcrumb1">
+            <ul>
+                <a href="index.html"><i class="fa fa-home home_1"></i></a>
+                <span class="divider">&nbsp;|&nbsp;</span>
+                <li class="current-page">About</li>
+            </ul>
+        </div>
+        <div class="about">
+            <div class="col-md-6 about_right">
+                <h1>About us</h1>
+                <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</p>
+                <div class="accordation">
+                    <div class="jb-accordion-wrapper">
+                        <div class="jb-accordion-title">Accordion 1 <button type="button" class="jb-accordion-button" data-toggle="collapse" data-target="#accordion-1-"><i class="fa fa-angle-down"> </i></button></div>
+                        <p>
+                            <!-- /.accordion-title -->
+                        </p><div id="accordion-1-" class="jb-accordion-content collapse in" style="height: auto;">
+                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae...</p>
+                        </div>
+                        <p><!-- /.collapse --></p>
+                    </div>
+                    <div class="jb-accordion-wrapper">
+                        <div class="jb-accordion-title">Accordion2 <button type="button" class="jb-accordion-button" data-toggle="collapse" data-target="#accordion2-"><i class="fa fa-angle-down"> </i></button></div>
+                        <p>
+                            <!-- /.accordion-title -->
+                        </p><div id="accordion2-" class="jb-accordion-content collapse ">
+                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt </p>
+                        </div>
+                        <p><!-- /.collapse --></p>
+                    </div>
+                    <div class="jb-accordion-wrapper">
+                        <div class="jb-accordion-title">Accordion3<button type="button" class="jb-accordion-button" data-toggle="collapse" data-target="#accordion3"><i class="fa fa-angle-down"> </i></button></div>
+                        <p>
+                            <!-- /.accordion-title -->
+                        </p><div id="accordion3" class="jb-accordion-content collapse ">
+                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt </p>
+                        </div>
+                        <p><!-- /.collapse --></p>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,192 @@
+﻿@model AsanNikkah.Orm_Tool.Views.All_Account 
+@{
+    ViewBag.Title = "EmailVerification";
+    Layout = "~/Views/Shared/ClientPanelLayout.cshtml";
+}
+
+@if (@Model == null)
+{
+    @section Menu {
+        <ul class="nav navbar-nav nav_1">
+            <li><a href="/Home/Index">Home</a></li>
+
+            <li>
+                <a href="/Halls/Index">
+                    Hall &amp;
+
+                    Banquets
+                </a>
+            </li>
+            <li>
+                <a href="/Caterers/Index">Caterers</a>
+            </li>
+            <li><a href="/Aboutus/Index">About</a></li>
+            <!--<li class="dropdown">
+                                              <a href="#" class="dropdown-toggle" data-
+
+            toggle="dropdown">Matches<span class="caret"></span></a>
+                                              <ul class="dropdown-menu" role="menu">
+                                                <li><a href="matches.html">New
+
+            Matches</a></li>
+                                                <li><a href="viewed-profile.html">Who
+
+            Viewed my Profile</a></li>
+                                                <li><a href="viewed-
+
+            not_contacted.html">Viewed & not Contacted</a></li>
+                                                <li><a href="members.html">Premium
+
+            Members</a></li>
+                                                <li><a
+
+            href="shortlisted.html">Shortlisted Profile</a></li>
+                                              </ul>
+                                            </li>-->
+            <!--<li class="dropdown">
+                                              <a href="#" class="dropdown-toggle" data-
+
+            toggle="dropdown">Search<span class="caret"></span></a>
+                                              <ul class="dropdown-menu" role="menu">
+                                                <li><a href="search.html">Regular
+
+            Search</a></li>
+                                                <li><a href="profile.html">Recently
+
+            Viewed Profiles</a></li>
+                                                <li><a href="search-id.html">Search By
+
+            Profile ID</a></li>
+                                                <li><a href="faq.html">Faq</a></li>
+                                                <li><a
+
+            href="shortcodes.html">Shortcodes</a></li>
+                                              </ul>
+                                            </li>-->
+            <li>
+                <a href="/Contactus/Index">
+                    Contact
+
+                    Us
+                </a>
+            </li>
+
+            <li style="background-color:#ffa417 !important;">
+                <a href="/Account/Login">
+                    Login
+                </a>
+            </li>
+
+        </ul>
+    }
+}
+
+else
+{
+    @section Menu {
+        <ul class="nav navbar-nav nav_1">
+            <li><a href="/Home/Index">Home</a></li>
+            @if (@Model.ProfileType == "M")
+            {
+                <li><a href="/Profiles/Index">Profiles</a></li>
+            }
+            <li><a href="/Halls/Index">Hall &amp; Banquets</a></li>
+            <li><a href="/Caterers/Index">Caterers</a></li>
+            @if (@Model.ProfileType == "M")
+            {
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Messages<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Messages/Index">Inbox</a></li>
+                    </ul>
+                </li>
+            }
+            <li><a href="/Aboutus/Index">About</a></li>
+            <!--<li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Matches<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="matches.html">New Matches</a></li>
+                <li><a href="viewed-profile.html">Who Viewed my Profile</a></li>
+                <li><a href="viewed-not_contacted.html">Viewed & not Contacted</a></li>
+                <li><a href="members.html">Premium Members</a></li>
+                <li><a href="shortlisted.html">Shortlisted Profile</a></li>
+              </ul>
+            </li>-->
+            <!--<li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Search<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="search.html">Regular Search</a></li>
+                <li><a href="profile.html">Recently Viewed Profiles</a></li>
+                <li><a href="search-id.html">Search By Profile ID</a></li>
+                <li><a href="faq.html">Faq</a></li>
+                <li><a href="shortcodes.html">Shortcodes</a></li>
+              </ul>
+            </li>-->
+            <li><a href="/Contactus/Index">Contact Us</a></li>
+            <li class="last dropdown" style="cursor:pointer">
+                <a class="dropdown-toggle" data-toggle="dropdown"><img src="@Model.Img" width="32px" height="32px"><b style="font-size:18px">@Model.Name<span class="caret"></span></b></a>
+                <ul class="dropdown-menu user-li" role="menu" style="display: none;">
+                    <li><a href="#">My Profile</a></li>
+                    <li><a href="/Account/Logout">Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    }
+}
+
+<div class="grid_3">
+    <div class="container" id="main-container">
+        @if (ViewBag.status == "Updated") { 
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <h1>Thank You.We Verified Your Email</h1>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <p>Your account has been successfully verified through email.</p>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <p>Now admin can approve your account.Thank you for your patience.</p>
+        </div>
+        <div class="clearfix"></div>
+        <br />
+        <br />
+        }
+        else if (ViewBag.status == "Member Not Updated")
+        {
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <h1>0ops.Some thing wrong</h1>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <p>Some thing wrong happened when updating your info.</p>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <p>We apologize to you.</p>
+            </div>
+            <div class="clearfix"></div>
+            <br />
+            <br />
+        }
+        else if (ViewBag.status == "Email Verification Not Updated")
+        {
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <h1>0ops.Some thing wrong</h1>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <p>Some thing wrong happened when updating activation token.</p>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <p>We apologize to you.</p>
+            </div>
+            <div class="clearfix"></div>
+            <br />
+            <br />
+        }
+    </div>
+    </div>
+
+

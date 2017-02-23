@@ -1,0 +1,865 @@
+﻿@model AsanNikkah.Orm_Tool.Views.All_Account 
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/ClientPanelLayout.cshtml";
+}
+
+@if (@Model == null)
+{
+    @section Menu {
+        <ul class="nav navbar-nav nav_1">
+            <li><a href="/Home/Index">Home</a></li>
+
+            <li>
+                <a href="/Halls/Index">
+                    Hall &amp;
+
+                    Banquets
+                </a>
+            </li>
+            <li>
+                <a href="/Caterers/Index">Caterers</a>
+            </li>
+            <li><a href="/Aboutus/Index">About</a></li>
+            <!--<li class="dropdown">
+                                              <a href="#" class="dropdown-toggle" data-
+
+            toggle="dropdown">Matches<span class="caret"></span></a>
+                                              <ul class="dropdown-menu" role="menu">
+                                                <li><a href="matches.html">New
+
+            Matches</a></li>
+                                                <li><a href="viewed-profile.html">Who
+
+            Viewed my Profile</a></li>
+                                                <li><a href="viewed-
+
+            not_contacted.html">Viewed & not Contacted</a></li>
+                                                <li><a href="members.html">Premium
+
+            Members</a></li>
+                                                <li><a
+
+            href="shortlisted.html">Shortlisted Profile</a></li>
+                                              </ul>
+                                            </li>-->
+            <!--<li class="dropdown">
+                                              <a href="#" class="dropdown-toggle" data-
+
+            toggle="dropdown">Search<span class="caret"></span></a>
+                                              <ul class="dropdown-menu" role="menu">
+                                                <li><a href="search.html">Regular
+
+            Search</a></li>
+                                                <li><a href="profile.html">Recently
+
+            Viewed Profiles</a></li>
+                                                <li><a href="search-id.html">Search By
+
+            Profile ID</a></li>
+                                                <li><a href="faq.html">Faq</a></li>
+                                                <li><a
+
+            href="shortcodes.html">Shortcodes</a></li>
+                                              </ul>
+                                            </li>-->
+            <li>
+                <a href="/Contactus/Index">
+                    Contact
+
+                    Us
+                </a>
+            </li>
+
+            <li style="background-color:#ffa417 !important;">
+                <a href="/Account/Login">
+                    Login
+                </a>
+            </li>
+
+        </ul>
+    }
+}
+
+else
+{
+    @section Menu {
+        <ul class="nav navbar-nav nav_1">
+            <li><a href="/Home/Index">Home</a></li>
+            @if (@Model.ProfileType == "M")
+            {
+                <li><a href="/Profiles/Index">Profiles</a></li>
+            }
+            <li><a href="/Halls/Index">Hall &amp; Banquets</a></li>
+            <li><a href="/Caterers/Index">Caterers</a></li>
+            @if (@Model.ProfileType == "M")
+            {
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Messages<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Messages/Index">Inbox</a></li>
+                    </ul>
+                </li>
+            }
+            <li><a href="/Aboutus/Index">About</a></li>
+            <!--<li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Matches<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="matches.html">New Matches</a></li>
+                <li><a href="viewed-profile.html">Who Viewed my Profile</a></li>
+                <li><a href="viewed-not_contacted.html">Viewed & not Contacted</a></li>
+                <li><a href="members.html">Premium Members</a></li>
+                <li><a href="shortlisted.html">Shortlisted Profile</a></li>
+              </ul>
+            </li>-->
+            <!--<li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Search<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="search.html">Regular Search</a></li>
+                <li><a href="profile.html">Recently Viewed Profiles</a></li>
+                <li><a href="search-id.html">Search By Profile ID</a></li>
+                <li><a href="faq.html">Faq</a></li>
+                <li><a href="shortcodes.html">Shortcodes</a></li>
+              </ul>
+            </li>-->
+            <li><a href="/Contactus/Index">Contact Us</a></li>
+            <li class="last dropdown" style="cursor:pointer">
+                <a class="dropdown-toggle" data-toggle="dropdown"><img src="@Model.Img" width="32px" height="32px"><b style="font-size:18px">@Model.Name<span class="caret"></span></b></a>
+                <ul class="dropdown-menu user-li" role="menu" style="display: none;">
+                    <li><a href="#">My Profile</a></li>
+                    <li><a href="/Account/Logout">Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    }
+}
+
+<div class="grid_3">
+    <div class="container">
+        <div class="breadcrumb1">
+            <ul>
+                <a href="index.html"><i class="fa fa-home home_1"></i></a>
+                <span class="divider">&nbsp;|&nbsp;</span>
+                <li class="current-page">Members Profile</li>
+            </ul>
+        </div>
+
+        <div class="col-md-3 match_right">
+            <ul class="menu">
+                <li class="item1" style="border-top:#000 solid 1px;">
+                    <h3 class="m_2">Bride / Groom</h3>
+                    <ul class="cute">
+                        <li class="subitem1">
+                            <div class="col-md-10 col-xs-10">
+                                <select class="form-control">
+                                    <option>-- No Preference --</option>
+                                    <option>Bride (Girl)</option>
+                                    <option>Groom (Boy)</option>
+                                </select>
+                                </div>
+                            <div class="col-md-2 col-xs-2">
+                                <span class="glyphicon glyphicon-refresh" style="font-size:26px;top:3px;left:-8px;cursor:pointer" title="Reset"></span>
+                            </div>
+                            <div class="clearfix"> </div>
+</li>
+                    </ul>
+                </li>
+                <li class="item1" style="border-top:#000 solid 1px;">
+                    <h3 class="m_2">Age Range</h3>
+                    
+                        <ul class="cute">
+                            <li class="subitem1">
+                                <div class="col-md-10 col-xs-10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon1">From</span>
+                                        <select name="age_from" class="form-control">
+                                            <option value="0">-- No Preference --</option>
+                                            <option value="18" selected="">18</option>
+                                            <option value="19">19</option>
+                                            <option value="20">20</option>
+                                            <option value="21">21</option>
+                                            <option value="22">22</option>
+                                            <option value="23">23</option>
+                                            <option value="24">24</option>
+                                            <option value="25">25</option>
+                                            <option value="26">26</option>
+                                            <option value="27">27</option>
+                                            <option value="28">28</option>
+                                            <option value="29">29</option>
+                                            <option value="30">30</option>
+                                            <option value="31">31</option>
+                                            <option value="32">32</option>
+                                            <option value="33">33</option>
+                                            <option value="34">34</option>
+                                            <option value="35">35</option>
+                                            <option value="36">36</option>
+                                            <option value="37">37</option>
+                                            <option value="38">38</option>
+                                            <option value="39">39</option>
+                                            <option value="40">40</option>
+                                            <option value="41">41</option>
+                                            <option value="42">42</option>
+                                            <option value="43">43</option>
+                                            <option value="44">44</option>
+                                            <option value="45">45</option>
+                                            <option value="46">46</option>
+                                            <option value="47">47</option>
+                                            <option value="48">48</option>
+                                            <option value="49">49</option>
+                                            <option value="50">50</option>
+                                            <option value="51">51</option>
+                                            <option value="52">52</option>
+                                            <option value="53">53</option>
+                                            <option value="54">54</option>
+                                            <option value="55">55</option>
+                                            <option value="56">56</option>
+                                            <option value="57">57</option>
+                                            <option value="58">58</option>
+                                            <option value="59">59</option>
+                                            <option value="60">60</option>
+                                            <option value="61">61</option>
+                                            <option value="62">62</option>
+                                            <option value="63">63</option>
+                                            <option value="64">64</option>
+                                            <option value="65">65</option>
+                                            <option value="66">66</option>
+                                            <option value="67">67</option>
+                                            <option value="68">68</option>
+                                            <option value="69">69</option>
+                                            <option value="70">70</option>
+                                        </select>
+                                    </div>
+                                    </div>
+                                     <div class="col-md-2 col-xs-2">
+                                         <span class="glyphicon glyphicon-refresh" style="font-size:26px;top:3px;left:-8px;cursor:pointer" title="Reset"></span>
+                                     </div>
+                                <div class="clearfix"> </div>
+
+                                <div class="col-md-10 col-xs-10">
+                                    <div class="input-group" style="margin-top:10px;">
+                                        <span class="input-group-addon" id="basic-addon1">To</span>
+                                        <select name="age_from" class="form-control">
+                                            <option value="0">-- No Preference --</option>
+                                            <option value="18" selected="">18</option>
+                                            <option value="19">19</option>
+                                            <option value="20">20</option>
+                                            <option value="21">21</option>
+                                            <option value="22">22</option>
+                                            <option value="23">23</option>
+                                            <option value="24">24</option>
+                                            <option value="25">25</option>
+                                            <option value="26">26</option>
+                                            <option value="27">27</option>
+                                            <option value="28">28</option>
+                                            <option value="29">29</option>
+                                            <option value="30">30</option>
+                                            <option value="31">31</option>
+                                            <option value="32">32</option>
+                                            <option value="33">33</option>
+                                            <option value="34">34</option>
+                                            <option value="35">35</option>
+                                            <option value="36">36</option>
+                                            <option value="37">37</option>
+                                            <option value="38">38</option>
+                                            <option value="39">39</option>
+                                            <option value="40">40</option>
+                                            <option value="41">41</option>
+                                            <option value="42">42</option>
+                                            <option value="43">43</option>
+                                            <option value="44">44</option>
+                                            <option value="45">45</option>
+                                            <option value="46">46</option>
+                                            <option value="47">47</option>
+                                            <option value="48">48</option>
+                                            <option value="49">49</option>
+                                            <option value="50">50</option>
+                                            <option value="51">51</option>
+                                            <option value="52">52</option>
+                                            <option value="53">53</option>
+                                            <option value="54">54</option>
+                                            <option value="55">55</option>
+                                            <option value="56">56</option>
+                                            <option value="57">57</option>
+                                            <option value="58">58</option>
+                                            <option value="59">59</option>
+                                            <option value="60">60</option>
+                                            <option value="61">61</option>
+                                            <option value="62">62</option>
+                                            <option value="63">63</option>
+                                            <option value="64">64</option>
+                                            <option value="65">65</option>
+                                            <option value="66">66</option>
+                                            <option value="67">67</option>
+                                            <option value="68">68</option>
+                                            <option value="69">69</option>
+                                            <option value="70">70</option>
+                                        </select>
+                                    </div>
+                                    </div>
+                                <div class="col-md-2 col-xs-2">
+                                    <span class="glyphicon glyphicon-refresh" style="font-size:26px;top:13px;left:-8px;cursor:pointer" title="Reset"></span>
+                                </div>
+                                <div class="clearfix"> </div>
+</li>
+                        </ul>
+                </li>
+                <li class="item1" style="border-top:#000 solid 1px;">
+                    <h3 class="m_2">Marital Status</h3>
+                    <ul class="cute">
+                        <li class="subitem1">
+                            <div class="col-md-10 col-xs-10">
+                                <select name="maritalstatus" class="form-control" id="maritalstatus">
+                                    <option value="">-- No Preference --</option>
+                                    <option value="Never Married">Never Married</option>
+                                    <option value="Married but looking">Married but looking</option>
+                                    <option value="Divorced">Divorced</option>
+                                    <option value="Widowed">Widowed</option>
+                                    <option value="Separated">Separated</option>
+                                </select>
+                                </div>
+                            <div class="col-md-2 col-xs-2">
+                                <span class="glyphicon glyphicon-refresh" style="font-size:26px;top:3px;left:-8px;cursor:pointer" title="Reset"></span>
+                            </div>
+                            <div class="clearfix"> </div>
+</li>
+                    </ul>
+                </li>
+                <li class="item1" style="border-top:#000 solid 1px;">
+                    <h3 class="m_2">Education</h3>
+                    <ul class="cute">
+                        <div class="col-md-10 col-xs-10">
+                            <select name="education" class="form-control" id="education">
+                                <option value="">-- No Preference --</option>
+                                <option value="Middle School">Middle School</option>
+                                <option value="Intermediates">Intermediates</option>
+                                <option value="Bachelors">Bachelors</option>
+                                <option value="Masters">Masters</option>
+                                <option value="Doctorate">Doctorate</option>
+                                <option value="Uneducated">Uneducated</option>
+                            </select>
+                            </div>
+                        <div class="col-md-2 col-xs-2">
+                            <span class="glyphicon glyphicon-refresh" style="font-size:26px;top:3px;left:-8px;cursor:pointer" title="Reset"></span>
+                        </div>
+                        <div class="clearfix"> </div>
+</ul>
+                </li>
+                <li class="item1">
+                    <h3 class="m_2" style="border-top:#000 solid 1px;">Country</h3>
+                    <ul class="cute">
+                        <li class="subitem1">
+                            <div class="col-md-10 col-xs-10">
+                                <select name="countryh" class="form-control" onchange="showcities_ajax(this.value)">
+                                    <option value="">-- Select -- </option>
+                                    <option value="1">Afghanistan</option>
+                                    <option value="3">Algeria</option>
+                                    <option value="5">Andorra</option>
+                                    <option value="14">Australia</option>
+                                    <option value="15">Austria</option>
+                                    <option value="16">Azerbaijan</option>
+                                    <option value="18">Bahrain</option>
+                                    <option value="20">Bangladesh</option>
+                                    <option value="24">Belgium</option>
+                                    <option value="28">Bhutan</option>
+                                    <option value="29">Bolivia</option>
+                                    <option value="30">Bosnia and Herzegovina</option>
+                                    <option value="31">Botswana</option>
+                                    <option value="32">Bouvet Island</option>
+                                    <option value="33">Brazil</option>
+                                    <option value="34">British Indian Ocean Territory</option>
+                                    <option value="35">British Virgin Islands</option>
+                                    <option value="36">Brunei Darussalam</option>
+                                    <option value="37">Bulgaria</option>
+                                    <option value="38">Burkina Faso</option>
+                                    <option value="39">Burma</option>
+                                    <option value="40">Burundi</option>
+                                    <option value="41">Cambodia</option>
+                                    <option value="42">Cameroon</option>
+                                    <option value="43">Canada</option>
+                                    <option value="44">Cape Verde</option>
+                                    <option value="45">Cayman Islands</option>
+                                    <option value="46">Central African Republic</option>
+                                    <option value="47">Chad</option>
+                                    <option value="48">Chile</option>
+                                    <option value="49">China</option>
+                                    <option value="63">Cyprus</option>
+                                    <option value="64">Czech Republic</option>
+                                    <option value="65">Denmark</option>
+                                    <option value="71">Egypt</option>
+                                    <option value="81">Finland</option>
+                                    <option value="82">France</option>
+                                    <option value="91">Germany</option>
+                                    <option value="93">Gibraltar</option>
+                                    <option value="95">Greece</option>
+                                    <option value="109">Hong Kong (SAR)</option>
+                                    <option value="111">Hungary</option>
+                                    <option value="112">Iceland</option>
+                                    <option value="113">India</option>
+                                    <option value="114">Indonesia</option>
+                                    <option value="115">Iran</option>
+                                    <option value="116">Iraq</option>
+                                    <option value="117">Ireland</option>
+                                    <option value="118">Israel</option>
+                                    <option value="119">Italy</option>
+                                    <option value="122">Japan</option>
+                                    <option value="126">Jordan</option>
+                                    <option value="128">Kazakhstan</option>
+                                    <option value="129">Kenya</option>
+                                    <option value="132">Korea, North</option>
+                                    <option value="133">Korea, South</option>
+                                    <option value="134">Kuwait</option>
+                                    <option value="138">Lebanon</option>
+                                    <option value="141">Libya</option>
+                                    <option value="149">Malaysia</option>
+                                    <option value="150">Maldives</option>
+                                    <option value="151">Mali</option>
+                                    <option value="153">Man, Isle of</option>
+                                    <option value="156">Mauritania</option>
+                                    <option value="157">Mauritius</option>
+                                    <option value="159">Mexico</option>
+                                    <option value="174">Nepal</option>
+                                    <option value="175">Netherlands</option>
+                                    <option value="178">New Zealand</option>
+                                    <option value="181">Nigeria</option>
+                                    <option value="185">Norway</option>
+                                    <option value="186">Oman</option>
+                                    <option value="187" selected="">Pakistan</option>
+                                    <option value="190">Panama</option>
+                                    <option value="194">Peru</option>
+                                    <option value="195">Philippines</option>
+                                    <option value="197">Poland</option>
+                                    <option value="198">Portugal</option>
+                                    <option value="200">Qatar</option>
+                                    <option value="202">Romania</option>
+                                    <option value="203">Russia</option>
+                                    <option value="213">Saudi Arabia</option>
+                                    <option value="214">Senegal</option>
+                                    <option value="215">Serbia</option>
+                                    <option value="219">Singapore</option>
+                                    <option value="223">Somalia</option>
+                                    <option value="224">South Africa</option>
+                                    <option value="226">Spain</option>
+                                    <option value="228">Sri Lanka</option>
+                                    <option value="229">Sudan</option>
+                                    <option value="232">Swaziland</option>
+                                    <option value="233">Sweden</option>
+                                    <option value="234">Switzerland</option>
+                                    <option value="235">Syria</option>
+                                    <option value="236">Taiwan</option>
+                                    <option value="237">Tajikistan</option>
+                                    <option value="238">Tanzania</option>
+                                    <option value="239">Thailand</option>
+                                    <option value="245">Tunisia</option>
+                                    <option value="246">Turkey</option>
+                                    <option value="247">Turkmenistan</option>
+                                    <option value="250">Uganda</option>
+                                    <option value="251">Ukraine</option>
+                                    <option value="252">United Arab Emirates</option>
+                                    <option value="253">United Kingdom</option>
+                                    <option value="254">United States</option>
+                                    <option value="257">Uzbekistan</option>
+                                    <option value="260">Vietnam</option>
+                                    <option value="269">World</option>
+                                    <option value="270">Yemen</option>
+                                </select>
+                                </div>
+                            <div class="col-md-2 col-xs-2">
+                                <span class="glyphicon glyphicon-refresh" style="font-size:26px;top:3px;left:-8px;cursor:pointer" title="Reset"></span>
+                            </div>
+                            <div class="clearfix"> </div>
+</li>
+                    </ul>
+                </li>
+                <li class="item1">
+                    <h3 class="m_2">City</h3>
+                    <ul class="cute">
+                        <li class="subitem1"></li>
+                    </ul>
+                </li>
+                <li class="item1" style="border-top:#000 solid 1px;">
+                    <h3 class="m_2">Other Nationality</h3>
+                    <ul class="cute">
+                        <li class="subitem1">
+                            <div class="col-md-10 col-xs-10">
+                            <select name="countryh" class="form-control" onchange="showcities_ajax(this.value)">
+                                <option value="">-- Select -- </option>
+                                <option value="1">Afghanistan Citizen </option>
+                                <option value="3">Algeria Citizen </option>
+                                <option value="5">Andorra Citizen </option>
+                                <option value="14">Australia Citizen </option>
+                                <option value="15">Austria Citizen </option>
+                                <option value="16">Azerbaijan Citizen </option>
+                                <option value="18">Bahrain Citizen </option>
+                                <option value="20">Bangladesh Citizen </option>
+                                <option value="24">Belgium Citizen </option>
+                                <option value="28">Bhutan Citizen </option>
+                                <option value="29">Bolivia Citizen </option>
+                                <option value="30">Bosnia and Herzegovina Citizen </option>
+                                <option value="31">Botswana Citizen </option>
+                                <option value="32">Bouvet Island Citizen </option>
+                                <option value="33">Brazil Citizen </option>
+                                <option value="34">British Indian Ocean Territory Citizen </option>
+                                <option value="35">British Virgin Islands Citizen </option>
+                                <option value="36">Brunei Darussalam Citizen </option>
+                                <option value="37">Bulgaria Citizen </option>
+                                <option value="38">Burkina Faso Citizen </option>
+                                <option value="39">Burma Citizen </option>
+                                <option value="40">Burundi Citizen </option>
+                                <option value="41">Cambodia Citizen </option>
+                                <option value="42">Cameroon Citizen </option>
+                                <option value="43">Canada Citizen </option>
+                                <option value="44">Cape Verde Citizen </option>
+                                <option value="45">Cayman Islands Citizen </option>
+                                <option value="46">Central African Republic Citizen </option>
+                                <option value="47">Chad Citizen </option>
+                                <option value="48">Chile Citizen </option>
+                                <option value="49">China Citizen </option>
+                                <option value="63">Cyprus Citizen </option>
+                                <option value="64">Czech Republic Citizen </option>
+                                <option value="65">Denmark Citizen </option>
+                                <option value="71">Egypt Citizen </option>
+                                <option value="81">Finland Citizen </option>
+                                <option value="82">France Citizen </option>
+                                <option value="91">Germany Citizen </option>
+                                <option value="93">Gibraltar Citizen </option>
+                                <option value="95">Greece Citizen </option>
+                                <option value="109">Hong Kong (SAR) Citizen </option>
+                                <option value="111">Hungary Citizen </option>
+                                <option value="112">Iceland Citizen </option>
+                                <option value="113">India Citizen </option>
+                                <option value="114">Indonesia Citizen </option>
+                                <option value="115">Iran Citizen </option>
+                                <option value="116">Iraq Citizen </option>
+                                <option value="117">Ireland Citizen </option>
+                                <option value="118">Israel Citizen </option>
+                                <option value="119">Italy Citizen </option>
+                                <option value="122">Japan Citizen </option>
+                                <option value="126">Jordan Citizen </option>
+                                <option value="128">Kazakhstan Citizen </option>
+                                <option value="129">Kenya Citizen </option>
+                                <option value="132">Korea, North Citizen </option>
+                                <option value="133">Korea, South Citizen </option>
+                                <option value="134">Kuwait Citizen </option>
+                                <option value="138">Lebanon Citizen </option>
+                                <option value="141">Libya Citizen </option>
+                                <option value="149">Malaysia Citizen </option>
+                                <option value="150">Maldives Citizen </option>
+                                <option value="151">Mali Citizen </option>
+                                <option value="153">Man, Isle of Citizen </option>
+                                <option value="156">Mauritania Citizen </option>
+                                <option value="157">Mauritius Citizen </option>
+                                <option value="159">Mexico Citizen </option>
+                                <option value="174">Nepal Citizen </option>
+                                <option value="175">Netherlands Citizen </option>
+                                <option value="178">New Zealand Citizen </option>
+                                <option value="181">Nigeria Citizen </option>
+                                <option value="185">Norway Citizen </option>
+                                <option value="186">Oman Citizen </option>
+                                <option value="187" selected="">Pakistan Citizen </option>
+                                <option value="190">Panama Citizen </option>
+                                <option value="194">Peru Citizen </option>
+                                <option value="195">Philippines Citizen </option>
+                                <option value="197">Poland Citizen </option>
+                                <option value="198">Portugal Citizen </option>
+                                <option value="200">Qatar Citizen </option>
+                                <option value="202">Romania Citizen </option>
+                                <option value="203">Russia Citizen </option>
+                                <option value="213">Saudi Arabia Citizen </option>
+                                <option value="214">Senegal Citizen </option>
+                                <option value="215">Serbia Citizen </option>
+                                <option value="219">Singapore Citizen </option>
+                                <option value="223">Somalia Citizen </option>
+                                <option value="224">South Africa Citizen </option>
+                                <option value="226">Spain Citizen </option>
+                                <option value="228">Sri Lanka Citizen </option>
+                                <option value="229">Sudan Citizen </option>
+                                <option value="232">Swaziland Citizen </option>
+                                <option value="233">Sweden Citizen </option>
+                                <option value="234">Switzerland Citizen </option>
+                                <option value="235">Syria Citizen </option>
+                                <option value="236">Taiwan Citizen </option>
+                                <option value="237">Tajikistan Citizen </option>
+                                <option value="238">Tanzania Citizen </option>
+                                <option value="239">Thailand Citizen </option>
+                                <option value="245">Tunisia Citizen </option>
+                                <option value="246">Turkey Citizen </option>
+                                <option value="247">Turkmenistan Citizen </option>
+                                <option value="250">Uganda Citizen </option>
+                                <option value="251">Ukraine Citizen </option>
+                                <option value="252">United Arab Emirates Citizen </option>
+                                <option value="253">United Kingdom Citizen </option>
+                                <option value="254">United States Citizen </option>
+                                <option value="257">Uzbekistan Citizen </option>
+                                <option value="260">Vietnam Citizen </option>
+                                <option value="269">World Citizen </option>
+                                <option value="270">Yemen Citizen </option>
+                            </select>
+                                </div>
+                            <div class="col-md-2 col-xs-2">
+                                <span class="glyphicon glyphicon-refresh" style="font-size:26px;top:3px;left:-8px;cursor:pointer" title="Reset"></span>
+                            </div>
+                            <div class="clearfix"> </div>
+
+                        </li>
+                    </ul>
+                </li>
+                <li class="item1" style="border-top:#000 solid 1px;">
+                    <h3 class="m_2">Religion</h3>
+                    <ul class="cute">
+                        <li class="subitem1">
+                                <div class="col-md-10 col-xs-10">
+                                    <select name="religion" class="form-control" id="religion">
+                                        <option value="">-- No Preference --</option>
+                                        <option value="Islam" selected="">Islam</option>
+                                        <option value="Christianity">Christianity</option>
+                                        <option value="Catholicism">Catholicism</option>
+                                        <option value="Hindu">Hindu</option>
+                                        <option value="Sikh">Sikh</option>
+                                        <option value="Agnosticism">Agnosticism</option>
+                                        <option value="Buddhism">Buddhism</option>
+                                        <option value="Atheism">Atheism</option>
+                                        <option value="Anglicanism">Anglicanism</option>
+                                        <option value="Anglicanism">Other</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 col-xs-2">
+                                    <span class="glyphicon glyphicon-refresh" style="font-size:26px;top:3px;left:-8px;cursor:pointer" title="Reset"></span>
+                                </div>
+
+                            <div class="clearfix"> </div>
+</li>
+                    </ul>
+                </li>
+                <br />
+
+                <li class="item1">
+                        <!--<div class="col-md-6 col-xs-12 right">
+                            
+                        </div>-->
+                    <button type="submit" class="btn btn-success" style="float:right">
+                        Search <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="col-md-9 profile_left2">
+
+            <div class="profile_top">
+                <h2>Lucas</h2>
+                <div class="col-sm-3 profile_left-top">
+                    <img src="~/Content/images/a5.jpg" class="img-responsive" alt="" />
+                </div>
+                <div class="col-sm-3">
+                    <ul class="login_details1">
+                        <li><p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor." More....</p></li>
+                    </ul>
+                </div>
+                <div class="col-sm-6">
+                    <table class="table_working_hours">
+                        <tbody>
+                            <tr class="opened_1">
+                                <td class="day_label1">Age / Height :</td>
+                                <td class="day_value">28, 5ft 5in</td>
+                            </tr>
+                            <tr class="opened">
+                                <td class="day_label1">Religion :</td>
+                                <td class="day_value">Sikh</td>
+                            </tr>
+                            <tr class="opened">
+                                <td class="day_label1">Marital Status :</td>
+                                <td class="day_value">Single</td>
+                            </tr>
+                            <tr class="opened">
+                                <td class="day_label1">Location :</td>
+                                <td class="day_value">India</td>
+                            </tr>
+                            <tr class="closed">
+                                <td class="day_label1">Education :</td>
+                                <td class="day_value closed"><span>Engineering</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="buttons">
+                        <div class="vertical">Contact Request</div>
+                    </div>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+            <div class="profile_top">
+                <h2>Sophia</h2>
+                <div class="col-sm-3 profile_left-top">
+                    <img src="~/Content/images/a6.jpg" class="img-responsive" alt="" />
+                </div>
+                <div class="col-sm-3">
+                    <ul class="login_details1">
+                        <li><p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor." More....</p></li>
+                    </ul>
+                </div>
+                <div class="col-sm-6">
+                    <table class="table_working_hours">
+                        <tbody>
+                            <tr class="opened_1">
+                                <td class="day_label1">Age / Height :</td>
+                                <td class="day_value">28, 5ft 5in</td>
+                            </tr>
+                            <tr class="opened">
+                                <td class="day_label1">Religion :</td>
+                                <td class="day_value">Sikh</td>
+                            </tr>
+                            <tr class="opened">
+                                <td class="day_label1">Marital Status :</td>
+                                <td class="day_value">Single</td>
+                            </tr>
+                            <tr class="opened">
+                                <td class="day_label1">Location :</td>
+                                <td class="day_value">India</td>
+                            </tr>
+                            <tr class="closed">
+                                <td class="day_label1">Education :</td>
+                                <td class="day_value closed"><span>Engineering</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="buttons">
+                        <div class="vertical">Contact Request</div>
+                    </div>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+            <div class="profile_top">
+                <h2>Emma</h2>
+                <div class="col-sm-3 profile_left-top">
+                    <img src="~/Content/images/a7.jpg" class="img-responsive" alt="">
+                </div>
+                <div class="col-sm-3">
+                    <ul class="login_details1">
+                        <li><p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor." More....</p></li>
+                    </ul>
+                </div>
+                <div class="col-sm-6">
+                    <table class="table_working_hours">
+                        <tbody>
+                            <tr class="opened_1">
+                                <td class="day_label1">Age / Height :</td>
+                                <td class="day_value">28, 5ft 5in</td>
+                            </tr>
+                            <tr class="opened">
+                                <td class="day_label1">Religion :</td>
+                                <td class="day_value">Sikh</td>
+                            </tr>
+                            <tr class="opened">
+                                <td class="day_label1">Marital Status :</td>
+                                <td class="day_value">Single</td>
+                            </tr>
+                            <tr class="opened">
+                                <td class="day_label1">Location :</td>
+                                <td class="day_value">India</td>
+                            </tr>
+                            <tr class="closed">
+                                <td class="day_label1">Education :</td>
+                                <td class="day_value closed"><span>Engineering</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="buttons">
+                        <div class="vertical">Contact Request</div>
+                    </div>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+            <div class="profile_top">
+                <h2>Lucas</h2>
+                <div class="col-sm-3 profile_left-top">
+                    <img src="~/Content/images/a5.jpg" class="img-responsive" alt="" />
+                </div>
+                <div class="col-sm-3">
+                    <ul class="login_details1">
+                        <li><p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor." More....</p></li>
+                    </ul>
+                </div>
+                <div class="col-sm-6">
+                    <table class="table_working_hours">
+                        <tbody>
+                            <tr class="opened_1">
+                                <td class="day_label1">Age / Height :</td>
+                                <td class="day_value">28, 5ft 5in</td>
+                            </tr>
+                            <tr class="opened">
+                                <td class="day_label1">Religion :</td>
+                                <td class="day_value">Sikh</td>
+                            </tr>
+                            <tr class="opened">
+                                <td class="day_label1">Marital Status :</td>
+                                <td class="day_value">Single</td>
+                            </tr>
+                            <tr class="opened">
+                                <td class="day_label1">Location :</td>
+                                <td class="day_value">India</td>
+                            </tr>
+                            <tr class="closed">
+                                <td class="day_label1">Education :</td>
+                                <td class="day_value closed"><span>Engineering</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="buttons">
+                        <div class="vertical">Contact Request</div>
+                    </div>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+            <div class="profile_top profile_top1">
+                <h2>Isabella</h2>
+                <div class="col-sm-3 profile_left-top">
+                    <img src="~/Content/images/a8.jpg" class="img-responsive" alt="" />
+                </div>
+                <div class="col-sm-3">
+                    <ul class="login_details1">
+                        <li><p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor." More....</p></li>
+                    </ul>
+                </div>
+                <div class="col-sm-6">
+                    <table class="table_working_hours">
+                        <tbody>
+                            <tr class="opened_1">
+                                <td class="day_label1">Age / Height :</td>
+                                <td class="day_value">28, 5ft 5in</td>
+                            </tr>
+                            <tr class="opened">
+                                <td class="day_label1">Religion :</td>
+                                <td class="day_value">Sikh</td>
+                            </tr>
+                            <tr class="opened">
+                                <td class="day_label1">Marital Status :</td>
+                                <td class="day_value">Single</td>
+                            </tr>
+                            <tr class="opened">
+                                <td class="day_label1">Location :</td>
+                                <td class="day_value">India</td>
+                            </tr>
+                            <tr class="closed">
+                                <td class="day_label1">Education :</td>
+                                <td class="day_value closed"><span>Engineering</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="buttons">
+                        <div class="vertical">Contact Request</div>
+                    </div>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+            <ul class="pagination">
+                <li class="active"><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+            </ul>
+        </div>
+
+        <div class="clearfix"> </div>
+    </div>
+</div>
+

@@ -1,0 +1,282 @@
+﻿@{
+    ViewBag.Title = "ClientPanelLayout";
+}
+
+
+<!--A Design by W3layouts
+Author: W3layout
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nikkah Made Easy - Connecting Souls</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="~/Content/images/icon.png" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Marital Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <link href="~/Content/css/bootstrap-3.1.1.min.css" rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" href="../../Content/css/rateyo.css"><!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="~/Scripts/js/jquery.min.js"></script>
+    <script src="~/Scripts/js/bootstrap.min.js"></script>
+    <!-- Custom Theme files -->
+    <link href="~/Content/css/style.css" rel='stylesheet' type='text/css' />
+    <link href='//fonts.googleapis.com/css?family=Oswald:300,400,700' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Ubuntu:300,400,500,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="../../Content/css/timepicker.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!----font-Awesome----->
+    <link href="~/Content/css/font-awesome.css" rel="stylesheet">
+    <!----font-Awesome----->
+    <script src="../../Scripts/js/rateyo.js"></script>
+    <script src="../../Scripts/js/jquery-validate.js"></script>
+    <script src="../../Scripts/js/timepicker.js"></script>
+    <script src="../../Scripts/js/jquery.twbsPagination.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        function ShowNotification(response,parentelement,second)
+        {
+            var bool = false;
+            $("#alertbar_modal").remove();
+            var exception = "<div class=\"alert alert-danger fade in alert-dismissable\" id=\"alertbar_modal\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\" title=\"close\">×</a>";
+            $.each($.parseJSON(response), function (index, element) {
+
+                if (element.returntype == "success")
+                {
+                    exception = "<div class=\"alert alert-success fade in alert-dismissable\" id=\"alertbar_modal\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\" title=\"close\">×</a><strong>Well done! </strong>" + element.message + "<br>";
+                    bool = true;
+                    return true;
+                }
+
+                else
+                {
+                    exception += "<strong>*</strong>" + element.message + "<br>";
+                    bool = false;
+                }
+
+            });
+
+            exception += "</div>";
+            $(parentelement).prepend(exception);
+            $('html, body').animate({
+                scrollTop: $("html, body").offset().top
+            }, 500);
+            //setTimeout(function () { $("#alertbar_modal").fadeOut(300); $("#alertbar_modal").remove(); }, second*1000);
+            return bool;
+        }
+
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        function Iserror(response)
+        {
+            var bool = false;
+            var profileid = "";
+            $.each($.parseJSON(response), function (index, element) {
+                if (element.returntype == "success")
+                {
+                    bool = true;
+                    profileid = element.profileid;
+                    return true;
+                }
+
+                else
+                {
+                    bool = false;
+                    profileid = "error";
+                    return false;
+                }
+            });
+
+            return profileid;
+        }
+
+        $(document).ready(function () {
+
+        @RenderSection("Script", required: false)
+
+           
+
+            $.fn.serializeObject = function () {
+                var o = {};
+                var a = this.serializeArray();
+                $.each(a, function () {
+                    if (o[this.name] !== undefined) {
+                        if (!o[this.name].push) {
+                            o[this.name] = [o[this.name]];
+                        }
+                        o[this.name].push(this.value || '');
+                    } else {
+                        o[this.name] = this.value || '';
+                    }
+                });
+                return o;
+            };
+
+            $(".rateYo").each(function (i, obj) {
+
+                var val = $(obj).attr("data-rating");
+                $(obj).rateYo({
+                    rating: val,
+                    readOnly: true
+                });
+            });
+
+
+            $(".dropdown").hover(
+                function () {
+                    $('.dropdown-menu', this).stop(true, true).slideDown("fast");
+                    $(this).toggleClass('open');
+                },
+                function () {
+                    $('.dropdown-menu', this).stop(true, true).slideUp("fast");
+                    $(this).toggleClass('open');
+                }
+            );
+            var d = new Date();
+            var d2 = new Date(70, 0, 1);
+
+
+            $(".datepicker").datepicker({
+                defaultDate:d2,
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '1940:' + (d.getFullYear() - 18).toString()
+            });
+        });
+    </script>
+    <style>
+        #pluswrap {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            display: none;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.91);
+            top: 0;
+            z-index: 1001;
+        }
+
+        .tab-active {
+            background-color:#ffa417 !important;
+            color:#fff !important;
+        }
+
+        .thumb-image {
+                float: left;
+    width: 100px;
+    position: relative;
+    padding: 5px;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div id="pluswrap">
+        <div class="plus">
+            <img src="@Url.Content("~/Content/images/ring-alt.gif")" style="position:absolute;top:47%;left:47%;" />
+        </div>
+    </div>
+    <!-- ============================  Navigation Start =========================== -->
+    <div class="navbar navbar-inverse-blue navbar">
+        <!--<div class="navbar navbar-inverse-blue navbar-fixed-top">-->
+        <div class="navbar-inner">
+            <div class="container">
+
+                <a class="brand" href="/"><img src="~/Content/images/logo.png" alt="logo"></a>
+                <div class="pull-right">
+                    <nav class="navbar nav_bottom" role="navigation">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <div class="navbar-header nav_2">
+                            <button type="button" class="navbar-toggle collapsed navbar-toggle1" data-toggle="collapse" data-target="#bs-megadropdown-tabs">
+                                Menu
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="#"></a>
+                        </div>
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
+                            @RenderSection("Menu", required: false)
+                        </div><!-- /.navbar-collapse -->
+                    </nav>
+                </div> <!-- end pull-right -->
+                <!--<div class="navigation">
+                  <nav id="colorNav">
+                    <ul>
+                     <li class="green">
+                         <a href="#" class="icon-home"></a>
+                         <ul>
+                             <li><a href="login.html">Login</a></li>
+                             <li><a href="register.html">Register</a></li>
+                             <li><a href="index.html">Logout</a></li>
+                         </ul>
+                     </li>
+                    </ul>
+                  </nav>
+                </div>-->
+                <div class="clearfix"> </div>
+            </div> <!-- end container -->
+        </div> <!-- end navbar-inner -->
+    </div> <!-- end navbar-inverse-blue -->
+    <!-- ============================  Navigation End ============================ -->
+
+    @RenderBody()
+
+    <!--<div class="map">
+        <iframe src="https://www.google.com/maps?q=Hyderabad, Sindh, Pakistan&output=embed"> </iframe>
+    </div>-->
+    <hr />
+    <div class="footer">
+        <div class="container">
+            <div class="col-md-4 col_2">
+                <h4>About Us</h4>
+                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."</p>
+            </div>
+            <div class="col-md-2 col_2">
+                <h4>Help & Support</h4>
+                <ul class="footer_links">
+                    <li><a href="contact.html">Contact us</a></li>
+                    <!--<li><a href="#">24x7 Live help</a></li>
+                    <li><a href="#">Feedback</a></li>
+                    <li><a href="faq.html">FAQs</a></li>-->
+                </ul>
+            </div>
+            <!--<div class="col-md-2 col_2">
+                <h4>Quick Links</h4>
+                <ul class="footer_links">
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms and Conditions</a></li>
+                    <li><a href="services.html">Services</a></li>
+                </ul>
+            </div>-->
+            <!--<div class="col-md-2 col_2">
+                <h4>Social</h4>
+                <ul class="footer_social">
+                  <li><a href="#"><i class="fa fa-facebook fa1"> </i></a></li>
+                  <li><a href="#"><i class="fa fa-twitter fa1"> </i></a></li>
+                  <li><a href="#"><i class="fa fa-google-plus fa1"> </i></a></li>
+                  <li><a href="#"><i class="fa fa-youtube fa1"> </i></a></li>
+                </ul>
+            </div>-->
+            <div class="clearfix"> </div>
+            <div class="copy">
+                <p>Copyright © 2015 Asannikkah . All Rights Reserved  | Design by <a href="#">Veinz Tech</a> </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

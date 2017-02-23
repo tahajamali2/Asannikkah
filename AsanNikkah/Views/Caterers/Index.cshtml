@@ -1,0 +1,1165 @@
+﻿@model AsanNikkah.Orm_Tool.Views.All_Account 
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/ClientPanelLayout.cshtml";
+}
+
+<script>
+    var country = "";
+    var city = "";
+
+    var $rateyo;
+
+    $(document).ready(function () {
+        /*$.getJSON('http://freegeoip.net/json/', function (data) {
+            country = data.country_name;
+            city = data.city;
+        });*/
+
+        rateyo = $(".rating").rateYo({
+            rating: 0.0
+        });
+        $.ajax({
+            url: 'http://freegeoip.net/json/',
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                country = data.country_name;
+                city = data.city
+            }
+        });
+
+        $(document).on("click", ".feedback", function () {
+            $(".modal-title").text("'" + $(this).attr("data-name") + "' Feedback");
+
+            rateyo.rateYo("destroy");
+            $rateyo = $(".rating").rateYo({
+                rating: 0.0
+            });
+
+            $("#feedback-submit").attr("data-id", $(this).attr("data-id"));
+            $("#comment").val("");
+        });
+
+
+        $(document).on("click", ".contactus", function () {
+            $(".modal-title-contactus").text("'" + $(this).attr("data-name") + "' Contact Us");
+
+
+            $("#contact-submit").attr("data-email", $(this).attr("data-email"));
+            $("#message").val("");
+            $("#youremail").val("");
+            $("#yourname").val("");
+        });
+    });
+
+    var filter = "";
+
+    function getCookie(name) {
+        var dc = document.cookie;
+        var prefix = name + "=";
+        var begin = dc.indexOf("; " + prefix);
+        if (begin == -1) {
+            begin = dc.indexOf(prefix);
+            if (begin != 0) return null;
+        }
+        else {
+            begin += 2;
+            var end = document.cookie.indexOf(";", begin);
+            if (end == -1) {
+                end = dc.length;
+            }
+        }
+        // because unescape has been deprecated, replaced with decodeURI
+        //return unescape(dc.substring(begin + prefix.length, end));
+        return decodeURI(dc.substring(begin + prefix.length, end));
+    }
+
+    function UpdateCaterers(param,isfilter) {
+
+        $.ajax({
+            url: '/Caterers/GetCatererLists',
+            data: { 'json': param },
+            type: "post",
+            cache: false,
+            beforeSend: function () {
+                $("#pluswrap").fadeIn(500)
+            },
+            success: function (savingStatus) {
+                var myData = $.parseJSON(savingStatus);
+
+                pagin = $('.pagination').twbsPagination({
+                    totalPages: myData[1][0].Pages == 0 ? 1 : myData[1][0].Pages,
+                    visiblePages: 5,
+                    initiateStartPageClick:false,
+                    onPageClick: function (event, page) {
+                        if (isfilter) {
+                            UpdateCaterers('{"Page":' + page + ',' + filter + '}');
+                        }
+                        else {
+                            UpdateCaterers('{"Page":' + page + ',"Country":"' + country + '","City":"' + city + '"}', true);
+                        }
+                    }
+                });
+
+                var html = "";
+                $("#profiles").html("");
+                $.each(myData[0], function () {
+                    html = '<div class="profile_top">\
+                        <h2><a href="/Caterer/Index?Id=' + this.ID + '" style="color:#000;">' + this.Name + '</a></h2>\
+                        <div class="col-sm-2 profile_left-top">\
+                            <img src="'+ this.Img + '" class="img-responsive" alt="" />\
+                            <div class="rateYo" data-rating="'+ this.Rating + '"></div>\
+                        </div>\
+                        <div class="col-sm-2">'
+                    if ($(".last").length == 2 && $("a:contains('Messages')").length > 0) {
+                        html += '<a href="#" class="hvr-shutter-out-horizontal feedback" data-toggle="modal" data-target="#feedbackmodel" style="padding-right:46px;font-size:12px;" data-id="' + this.ID + '" data-name="' + this.Name + '">\
+                                <span class="glyphicon glyphicon-pencil" aria-hidden="true" ></span> Feedback\
+                            </a>\
+                            <div class="clear-fix"></div>'
+                    }
+
+                    html += '<a href="#" class="hvr-shutter-out-horizontal contactus" style="font-size:12px;" data-toggle="modal" data-target="#contactusmodel" data-email="' + this.Email + '" data-name="' + this.Name + '">\
+                                <span class="glyphicon glyphicon-envelope" aria-hidden="true" ></span>&nbsp;Contact us\
+                            </a>\
+                        </div>\
+                        <div class="col-sm-5">\
+                            <table class="table_working_hours">\
+                                <tbody>\
+                                    <tr class="opened_1">\
+                                        <td class="day_label1">Buffet Per Head :</td>\
+                                        <td class="day_value">'+ this.Buffet_PH + '</td>\
+                                    </tr>\
+                                    <tr class="opened">\
+                                        <td class="day_label1">Contact :</td>\
+                                        <td class="day_value">'+ this.Contact + '</td>\
+                                    </tr>\
+                                    <tr class="opened">\
+                                        <td class="day_label1">Office Hours :</td>\
+                                        <td class="day_value">' + this.Office_Hours + '</td>\
+                                    </tr>\
+                                    <tr class="opened">\
+                                        <td class="day_label1">Country :</td>\
+                                        <td class="day_value">'+ this.Country + '</td>\
+                                    </tr>\
+                                    <tr class="opened">\
+                                        <td class="day_label1">City :</td>\
+                                        <td class="day_value">'+ this.City + '</td>\
+                                    </tr>\
+                                </tbody>\
+                            </table>\
+                        </div>';
+
+                    if(this.Longitude!="" && this.Latitude!="")
+                    {
+                        html += '<div class="col-sm-3">\
+                            <iframe src="https://www.google.com/maps?q=' + this.Longitude + ','+this.Latitude+'&output=embed"> </iframe>\
+                        </div>';
+
+                    }
+
+                        html += '<div class="clearfix"> </div>\
+                        <div class="col-sm-12"><hr></div>\
+                        </div>';
+
+                    $("#profiles").append(html);
+                });
+
+
+
+                $(".rateYo").each(function (i, obj) {
+
+                    var val = $(obj).attr("data-rating");
+                    $(obj).rateYo({
+                        rating: val,
+                        readOnly: true
+                    });
+                });
+
+                $('html, body').animate({
+                    scrollTop: $("html, body").offset().top
+                }, 500);
+
+                $("#pluswrap").fadeOut(500);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(xhr.responseText);
+                $("#pluswrap").fadeOut(500);
+                $("#btn-submit-hall").removeAttr("disabled");
+
+            }
+        });
+    }
+
+    $(document).ready(function () {
+
+        $("#City-tx").show();
+        $("#City-tx").attr("name", "City");
+        $("#City-dd").hide();
+        $("#City-dd").removeAttr("name");
+
+        $("#country-dd").change(function () {
+            if ($(this).val() == "Pakistan") {
+                $("#City-tx").hide();
+                $("#City-tx").removeAttr("name");
+                $("#City-dd").show();
+                $("#City-dd").attr("name", "City");
+            }
+            else {
+                $("#City-tx").show();
+                $("#City-tx").attr("name", "City");
+                $("#City-dd").hide();
+                $("#City-dd").removeAttr("name");
+            }
+        });
+
+        UpdateCaterers('{"Country":"'+country+'","City":"'+city+'"}',false);
+
+        $("#btn_reset").click(function () {
+
+            $("#country-dd").val("-1");
+            $("#City-tx").show();
+            $("#City-tx").attr("name", "City");
+            $("#City-dd").hide();
+            $("#City-dd").removeAttr("name");
+            $("#City-tx").val("");
+            var $pagin = $('.pagination');
+            $pagin.twbsPagination('destroy');
+            UpdateCaterers('{"Country":"' + country + '","City":"' + city + '"}', false);
+        });
+
+        $("#btn_search").click(function () {
+
+            var Country = $("[name='Country']").val();
+            var City = $("[name='City']").val().trim() == "" ? "-1" : $("[name='City']").val();
+
+            filter = "\"Country\":\"" + Country + "\",\"City\":\"" + City + "\",\"IsFilter\":1";
+            var $pagin = $('.pagination');
+            $pagin.twbsPagination('destroy');
+            UpdateCaterers("{" + filter + "}", true);
+
+
+        });
+
+        $("#feedback-submit").click(function () {
+            $.ajax({
+                url: '/Caterers/AddRating',
+                data: { 'Rating': $rateyo.rateYo("rating"), 'comment': $("#comment").val(), 'CatererId': $(this).attr("data-id") },
+                type: "post",
+                cache: false,
+                beforeSend: function () {
+                    $("#pluswrap").fadeIn(500)
+                    $("#feedback-submit").attr("disabled", "disabled");
+                },
+                success: function (savingStatus) {
+                        $("#pluswrap").fadeOut(500, function () {
+
+
+                            if (ShowNotification(savingStatus, $("#main-container"), 2)) {
+                                $("#country-dd").val("-1");
+                                $("#City-tx").show();
+                                $("#City-tx").attr("name", "City");
+                                $("#City-dd").hide();
+                                $("#City-dd").removeAttr("name");
+                                $("#City-tx").val("");
+                                UpdateCaterers('{"Country":"' + country + '","City":"' + city + '"}', false);
+
+                            }
+                            $('#feedbackmodel').modal('hide');
+
+                            $("#feedback-submit").removeAttr("disabled");
+
+                        });
+
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.responseText);
+                    $("#pluswrap").fadeOut(500);
+                    $("#feedback-submit").removeAttr("disabled");
+
+                }
+            });
+        });
+
+
+        $("#contact-submit-form").validate({
+            rules: {
+                yourname: {
+                    required: true
+                },
+                youremail: {
+                    required: true
+                },
+                message: {
+                    required: true,
+                }
+            },
+            showErrors: function (errorMap, errorList) {
+                $.each(this.successList, function (index, value) {
+                    return $(value).popover("hide");
+                });
+                return $.each(errorList, function (index, value) {
+                    var _popover;
+                    console.log(value.message);
+                    _popover = $(value.element).popover({
+                        trigger: "manual",
+                        placement: "top",
+                        content: value.message,
+                        template: "<div class=\"popover\"><div class=\"arrow\"></div><div class=\"popover-inner\"><div class=\"popover-content\"><p></p></div></div></div>"
+                    });
+                    _popover.data("bs.popover").options.content = value.message;
+                    return $(value.element).popover("show");
+                });
+            }
+        });
+
+        $("#contact-submit-form").submit(function (e) {
+            e.preventDefault();
+        });
+
+        $("#contact-submit").click(function () {
+
+            if ($("#contact-submit-form").valid()) {
+            $.ajax({
+                url: '/Caterers/SendInquiry',
+                data: { 'yourname': $("#yourname").val(), 'youremail': $("#youremail").val(), 'yourmessage': $("#message").val(),'catereremail':$(this).attr("data-email") },
+                type: "post",
+                cache: false,
+                beforeSend: function () {
+                    $("#pluswrap").fadeIn(500)
+                    $("#contact-submit").attr("disabled", "disabled");
+                },
+                success: function (savingStatus) {
+                    $("#pluswrap").fadeOut(500, function () {
+
+
+                        if (ShowNotification(savingStatus, $("#main-container"), 7)) {
+                            
+                            setTimeout(function () { $("#alertbar_modal").fadeOut(300); $("#alertbar_modal").remove(); }, 5000);
+                        }
+                        $('#contactusmodel').modal('hide');
+
+                        $("#contact-submit").removeAttr("disabled");
+
+                    });
+
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.responseText);
+                    $("#pluswrap").fadeOut(500);
+                    $("#contact-submit").removeAttr("disabled");
+
+                }
+            });
+        }
+        });
+
+    });
+</script>
+
+@if (@Model == null)
+{
+    @section Menu {
+        <ul class="nav navbar-nav nav_1">
+            <li><a href="/Home/Index">Home</a></li>
+
+            <li>
+                <a href="/Halls/Index">
+                    Hall &amp;
+
+                    Banquets
+                </a>
+            </li>
+            <li>
+                <a href="/Caterers/Index">Caterers</a>
+            </li>
+            <li><a href="/Aboutus/Index">About</a></li>
+            <!--<li class="dropdown">
+                                              <a href="#" class="dropdown-toggle" data-
+
+            toggle="dropdown">Matches<span class="caret"></span></a>
+                                              <ul class="dropdown-menu" role="menu">
+                                                <li><a href="matches.html">New
+
+            Matches</a></li>
+                                                <li><a href="viewed-profile.html">Who
+
+            Viewed my Profile</a></li>
+                                                <li><a href="viewed-
+
+            not_contacted.html">Viewed & not Contacted</a></li>
+                                                <li><a href="members.html">Premium
+
+            Members</a></li>
+                                                <li><a
+
+            href="shortlisted.html">Shortlisted Profile</a></li>
+                                              </ul>
+                                            </li>-->
+            <!--<li class="dropdown">
+                                              <a href="#" class="dropdown-toggle" data-
+
+            toggle="dropdown">Search<span class="caret"></span></a>
+                                              <ul class="dropdown-menu" role="menu">
+                                                <li><a href="search.html">Regular
+
+            Search</a></li>
+                                                <li><a href="profile.html">Recently
+
+            Viewed Profiles</a></li>
+                                                <li><a href="search-id.html">Search By
+
+            Profile ID</a></li>
+                                                <li><a href="faq.html">Faq</a></li>
+                                                <li><a
+
+            href="shortcodes.html">Shortcodes</a></li>
+                                              </ul>
+                                            </li>-->
+            <li>
+                <a href="/Contactus/Index">
+                    Contact
+
+                    Us
+                </a>
+            </li>
+
+            <li style="background-color:#ffa417 !important;">
+                <a href="/Account/Login">
+                    Login
+                </a>
+            </li>
+
+        </ul>
+    }
+}
+
+else
+{
+    @section Menu {
+        <ul class="nav navbar-nav nav_1">
+            <li><a href="/Home/Index">Home</a></li>
+            @if (@Model.ProfileType == "M")
+            {
+                <li><a href="/Profiles/Index">Profiles</a></li>
+            }
+            <li><a href="/Halls/Index">Hall &amp; Banquets</a></li>
+            <li><a href="/Caterers/Index">Caterers</a></li>
+            @if (@Model.ProfileType == "M")
+            {
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Messages<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Messages/Index">Inbox</a></li>
+                    </ul>
+                </li>
+            }
+            <li><a href="/Aboutus/Index">About</a></li>
+            <!--<li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Matches<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="matches.html">New Matches</a></li>
+                <li><a href="viewed-profile.html">Who Viewed my Profile</a></li>
+                <li><a href="viewed-not_contacted.html">Viewed & not Contacted</a></li>
+                <li><a href="members.html">Premium Members</a></li>
+                <li><a href="shortlisted.html">Shortlisted Profile</a></li>
+              </ul>
+            </li>-->
+            <!--<li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Search<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="search.html">Regular Search</a></li>
+                <li><a href="profile.html">Recently Viewed Profiles</a></li>
+                <li><a href="search-id.html">Search By Profile ID</a></li>
+                <li><a href="faq.html">Faq</a></li>
+                <li><a href="shortcodes.html">Shortcodes</a></li>
+              </ul>
+            </li>-->
+            <li><a href="/Contactus/Index">Contact Us</a></li>
+            <li class="last dropdown" style="cursor:pointer">
+                <a class="dropdown-toggle" data-toggle="dropdown"><img src="@Model.Img" width="32px" height="32px"><b style="font-size:18px">@Model.Name<span class="caret"></span></b></a>
+                <ul class="dropdown-menu user-li" role="menu" style="display: none;">
+                    <li><a href="#" data-toggle="modal" data-target="#myprofilecaterermodel">My Profile</a></li>
+                    <li><a href="/Account/Logout">Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    }
+}
+
+<div class="grid_3">
+    <div class="container" id="main-container">
+        <div class="breadcrumb1">
+            <ul>
+                <a href="index.html"><i class="fa fa-home home_1"></i></a>
+                <span class="divider">&nbsp;|&nbsp;</span>
+                <li class="current-page">Caterers</li>
+            </ul>
+        </div>
+
+
+        <div class="col-md-12 profile_left2">
+
+            <div class="profile_top">
+
+                <div class="form_but2">
+                    <label class="col-md-2 control-lable1" for="sex">Filter : </label>
+
+                    <div class="col-md-1 form_radios">
+                        <label>Country : </label>
+                    </div>
+                    <div class="col-md-2 form_radios">
+                        <select class="form-control" id="country-dd" name="Country">
+                            <option value="-1" selected="">-- All -- </option>
+                            <option value="Afghanistan">Afghanistan</option>
+                            <option value="Algeria">Algeria</option>
+                            <option value="Andorra">Andorra</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Austria">Austria</option>
+                            <option value="Azerbaijan">Azerbaijan</option>
+                            <option value="Bahrain">Bahrain</option>
+                            <option value="Bangladesh">Bangladesh</option>
+                            <option value="Belgium">Belgium</option>
+                            <option value="Bhutan">Bhutan</option>
+                            <option value="Bolivia">Bolivia</option>
+                            <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                            <option value="Botswana">Botswana</option>
+                            <option value="Bouvet Island">Bouvet Island</option>
+                            <option value="Brazil">Brazil</option>
+                            <option value="British Indian Ocean Territory">British Indian Ocean Territory</option>
+                            <option value="British Virgin Islands">British Virgin Islands</option>
+                            <option value="Brunei Darussalam">Brunei Darussalam</option>
+                            <option value="Bulgaria">Bulgaria</option>
+                            <option value="Burkina Faso">Burkina Faso</option>
+                            <option value="Burma">Burma</option>
+                            <option value="Burundi">Burundi</option>
+                            <option value="Cambodia">Cambodia</option>
+                            <option value="Cameroon">Cameroon</option>
+                            <option value="Canada">Canada</option>
+                            <option value="Cape Verde">Cape Verde</option>
+                            <option value="Cayman Islands">Cayman Islands</option>
+                            <option value="Central African Republic">Central African Republic</option>
+                            <option value="Chad">Chad</option>
+                            <option value="Chile">Chile</option>
+                            <option value="China">China</option>
+                            <option value="Cyprus">Cyprus</option>
+                            <option value="Czech Republic">Czech Republic</option>
+                            <option value="Denmark">Denmark</option>
+                            <option value="Egypt">Egypt</option>
+                            <option value="Finland">Finland</option>
+                            <option value="France">France</option>
+                            <option value="Germany">Germany</option>
+                            <option value="Gibraltar">Gibraltar</option>
+                            <option value="Greece">Greece</option>
+                            <option value="Hong Kong (SAR)">Hong Kong (SAR)</option>
+                            <option value="Hungary">Hungary</option>
+                            <option value="Iceland">Iceland</option>
+                            <option value="India">India</option>
+                            <option value="Indonesia">Indonesia</option>
+                            <option value="Iran">Iran</option>
+                            <option value="Iraq">Iraq</option>
+                            <option value="Ireland">Ireland</option>
+                            <option value="Israel">Israel</option>
+                            <option value="Italy">Italy</option>
+                            <option value="Japan">Japan</option>
+                            <option value="Jordan">Jordan</option>
+                            <option value="Kazakhstan">Kazakhstan</option>
+                            <option value="Kenya">Kenya</option>
+                            <option value="Korea, North">Korea, North</option>
+                            <option value="Korea, South">Korea, South</option>
+                            <option value="Kuwait">Kuwait</option>
+                            <option value="Lebanon">Lebanon</option>
+                            <option value="Libya">Libya</option>
+                            <option value="Malaysia">Malaysia</option>
+                            <option value="Maldives">Maldives</option>
+                            <option value="Mali">Mali</option>
+                            <option value="Man, Isle of">Man, Isle of</option>
+                            <option value="Mauritania">Mauritania</option>
+                            <option value="Mauritius">Mauritius</option>
+                            <option value="Mexico">Mexico</option>
+                            <option value="Nepal">Nepal</option>
+                            <option value="Netherlands">Netherlands</option>
+                            <option value="New Zealand">New Zealand</option>
+                            <option value="Nigeria">Nigeria</option>
+                            <option value="Norway">Norway</option>
+                            <option value="Oman">Oman</option>
+                            <option value="Pakistan">Pakistan</option>
+                            <option value="Panama">Panama</option>
+                            <option value="Peru">Peru</option>
+                            <option value="Philippines">Philippines</option>
+                            <option value="Poland">Poland</option>
+                            <option value="Portugal">Portugal</option>
+                            <option value="Qatar">Qatar</option>
+                            <option value="Romania">Romania</option>
+                            <option value="Russia">Russia</option>
+                            <option value="Saudi Arabia">Saudi Arabia</option>
+                            <option value="Senegal">Senegal</option>
+                            <option value="Serbia">Serbia</option>
+                            <option value="Singapore">Singapore</option>
+                            <option value="Somalia">Somalia</option>
+                            <option value="South Africa">South Africa</option>
+                            <option value="Spain">Spain</option>
+                            <option value="Sri Lanka">Sri Lanka</option>
+                            <option value="Sudan">Sudan</option>
+                            <option value="Swaziland">Swaziland</option>
+                            <option value="Sweden">Sweden</option>
+                            <option value="Switzerland">Switzerland</option>
+                            <option value="Syria">Syria</option>
+                            <option value="Taiwan">Taiwan</option>
+                            <option value="Tajikistan">Tajikistan</option>
+                            <option value="Tanzania">Tanzania</option>
+                            <option value="Thailand">Thailand</option>
+                            <option value="Tunisia">Tunisia</option>
+                            <option value="Turkey">Turkey</option>
+                            <option value="Turkmenistan">Turkmenistan</option>
+                            <option value="Uganda">Uganda</option>
+                            <option value="Ukraine">Ukraine</option>
+                            <option value="United Arab Emirates">United Arab Emirates</option>
+                            <option value="United Kingdom">United Kingdom</option>
+                            <option value="United States">United States</option>
+                            <option value="Uzbekistan">Uzbekistan</option>
+                            <option value="Vietnam">Vietnam</option>
+                            <option value="World">World</option>
+                            <option value="Yemen">Yemen</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1 form_radios">
+                        <label>City : </label>
+                    </div>
+
+                    <div class="col-md-2 form_radios">
+                        <select class="form-control" name="City" id="City-dd">
+                            <option value="-1" selected="">-- All --</option>
+                            <option value="Islamabad">Islamabad</option>
+                            <option value="Karachi">Karachi</option>
+                            <option value="Rawalpindi">Rawalpindi</option>
+                            <option value="Lahore">Lahore</option>
+                            <option value="Peshawar">Peshawar</option>
+                            <option value="Quetta">Quetta</option>
+                            <option value="Multan">Multan</option>
+                            <option value="Abbottabad">Abbottabad</option>
+                            <option value="Hyderabad">Hyderabad</option>
+                            <option value="Faisalabad">Faisalabad</option>
+                            <option value="Muzaffarabad">Muzaffarabad</option>
+                            <option value="Mohen jo daro">Mohen jo daro</option>
+                            <option value="More kunda">More kunda</option>
+                            <option value="Morgah">Morgah</option>
+                            <option value="Moro">Moro</option>
+                            <option value="Mubarik pur">Mubarik pur</option>
+                            <option value="Mustung">Mustung</option>
+                            <option value="Muridkay">Muridkay</option>
+                            <option value="Murree">Murree</option>
+                            <option value="Musafir khana">Musafir khana</option>
+                            <option value="Mirpur mathelo">Mirpur mathelo</option>
+                            <option value="Mari indus">Mari indus</option>
+                            <option value="Mastoi">Mastoi</option>
+                            <option value="Matiari">Matiari</option>
+                            <option value="Matli">Matli</option>
+                            <option value="Mehar">Mehar</option>
+                            <option value="Mehmood kot">Mehmood kot</option>
+                            <option value="Mehrab pur">Mehrab pur</option>
+                            <option value="Mian chunnu">Mian chunnu</option>
+                            <option value="Mian Walli">Mian Walli</option>
+                            <option value="Mingora">Mingora</option>
+                            <option value="Mir ali">Mir ali</option>
+                            <option value="Miran shah">Miran shah</option>
+                            <option value="Mirpur khas">Mirpur khas</option>
+                            <option value="Muzaffargarh">Muzaffargarh</option>
+                            <option value="Nankana sahib">Nankana sahib</option>
+                            <option value="Narang mandi">Narang mandi</option>
+                            <option value="Pak china fertilizer">Pak china fertilizer</option>
+                            <option value="Pak pattan sharif">Pak pattan sharif</option>
+                            <option value="Panjan kisan">Panjan kisan</option>
+                            <option value="Panjgoor">Panjgoor</option>
+                            <option value="Pannu aqil">Pannu aqil</option>
+                            <option value="Panu Aqil">Panu Aqil</option>
+                            <option value="Pasni">Pasni</option>
+                            <option value="Pasroor">Pasroor</option>
+                            <option value="Patoki">Patoki</option>
+                            <option value="Phagwar">Phagwar</option>
+                            <option value="Padidan">Padidan</option>
+                            <option value="Nowshero peroz">Nowshero peroz</option>
+                            <option value="Nowshera cantt">Nowshera cantt</option>
+                            <option value="Narowal">Narowal</option>
+                            <option value="Naseerabad">Naseerabad</option>
+                            <option value="Naudero">Naudero</option>
+                            <option value="Naukot">Naukot</option>
+                            <option value="Naukundi">Naukundi</option>
+                            <option value="Nawab shah">Nawab shah</option>
+                            <option value="New saeedabad">New saeedabad</option>
+                            <option value="Nilore">Nilore</option>
+                            <option value="Noor kot">Noor kot</option>
+                            <option value="Noorpur nooranga">Noorpur nooranga</option>
+                            <option value="Phalia">Phalia</option>
+                            <option value="Manshera">Manshera</option>
+                            <option value="Khanqah dogran">Khanqah dogran</option>
+                            <option value="Kotla jam">Kotla jam</option>
+                            <option value="Kotla patdan">Kotla patdan</option>
+                            <option value="Kotli loharan">Kotli loharan</option>
+                            <option value="Kotri">Kotri</option>
+                            <option value="Kumbh">Kumbh</option>
+                            <option value="Kundina">Kundina</option>
+                            <option value="Kot bunglow">Kot bunglow</option>
+                            <option value="Kunjah">Kunjah</option>
+                            <option value="Kunri">Kunri</option>
+                            <option value="Laki marwat">Laki marwat</option>
+                            <option value="Kotla arab ali khan">Kotla arab ali khan</option>
+                            <option value="Kotla">Kotla</option>
+                            <option value="Kot radha kishan">Kot radha kishan</option>
+                            <option value="Khanqah sharif">Khanqah sharif</option>
+                            <option value="Khewra">Khewra</option>
+                            <option value="Khoski">Khoski</option>
+                            <option value="Khudian Khas">Khudian Khas</option>
+                            <option value="Khurian wala">Khurian wala</option>
+                            <option value="Khushal kot">Khushal kot</option>
+                            <option value="Khuzdar">Khuzdar</option>
+                            <option value="Kot addu">Kot addu</option>
+                            <option value="Kot ghulam mohd">Kot ghulam mohd</option>
+                            <option value="Kot mithan">Kot mithan</option>
+                            <option value="Lalamusa">Lalamusa</option>
+                            <option value="Lala rukh">Lala rukh</option>
+                            <option value="Malakand Agency">Malakand Agency</option>
+                            <option value="Malakwal">Malakwal</option>
+                            <option value="Mamu kunjan">Mamu kunjan</option>
+                            <option value="Mandi bahauddin">Mandi bahauddin</option>
+                            <option value="Mandra">Mandra</option>
+                            <option value="Manga mandi">Manga mandi</option>
+                            <option value="Mangal sada">Mangal sada</option>
+                            <option value="Mangi">Mangi</option>
+                            <option value="Mangla">Mangla</option>
+                            <option value="Mangowal">Mangowal</option>
+                            <option value="Makli">Makli</option>
+                            <option value="Mailsi">Mailsi</option>
+                            <option value="Madina">Madina</option>
+                            <option value="Laliah">Laliah</option>
+                            <option value="Lalshanra">Lalshanra</option>
+                            <option value="Lasbella">Lasbella</option>
+                            <option value="Lawrence pur">Lawrence pur</option>
+                            <option value="Layyah">Layyah</option>
+                            <option value="Liaquat pur">Liaquat pur</option>
+                            <option value="Lodhran">Lodhran</option>
+                            <option value="Lower Dir">Lower Dir</option>
+                            <option value="Ludhan">Ludhan</option>
+                            <option value="Machi goth">Machi goth</option>
+                            <option value="Manoabad">Manoabad</option>
+                            <option value="Shemier">Shemier</option>
+                            <option value="Takhtbai">Takhtbai</option>
+                            <option value="Talamba">Talamba</option>
+                            <option value="Talhur">Talhur</option>
+                            <option value="Tando adam">Tando adam</option>
+                            <option value="Tando allahyar">Tando allahyar</option>
+                            <option value="Tando jam">Tando jam</option>
+                            <option value="Tando mohd khan">Tando mohd khan</option>
+                            <option value="Tank">Tank</option>
+                            <option value="Tarbela">Tarbela</option>
+                            <option value="Tarmatan">Tarmatan</option>
+                            <option value="Swatmingora">Swatmingora</option>
+                            <option value="Swabi">Swabi</option>
+                            <option value="Sohawa district jelum">Sohawa district jelum</option>
+                            <option value="Shikar pur">Shikar pur</option>
+                            <option value="Shorkot">Shorkot</option>
+                            <option value="Shujabad">Shujabad</option>
+                            <option value="Sibi">Sibi</option>
+                            <option value="Sihala">Sihala</option>
+                            <option value="Sikandarabad">Sikandarabad</option>
+                            <option value="Silanwala">Silanwala</option>
+                            <option value="Sita road">Sita road</option>
+                            <option value="Skardu">Skardu</option>
+                            <option value="Sohawa district daska">Sohawa district daska</option>
+                            <option value="Taunsa sharif">Taunsa sharif</option>
+                            <option value="Taxila">Taxila</option>
+                            <option value="Umar kot">Umar kot</option>
+                            <option value="Upper deval">Upper deval</option>
+                            <option value="Usta mohammad">Usta mohammad</option>
+                            <option value="Village Sunder">Village Sunder</option>
+                            <option value="Wahi hassain">Wahi hassain</option>
+                            <option value="Wan radha ram">Wan radha ram</option>
+                            <option value="Warah">Warah</option>
+                            <option value="Warburton">Warburton</option>
+                            <option value="Wazirabad">Wazirabad</option>
+                            <option value="Yazman mandi">Yazman mandi</option>
+                            <option value="Ukba">Ukba</option>
+                            <option value="Ugoki">Ugoki</option>
+                            <option value="Ubauro">Ubauro</option>
+                            <option value="Tharo shah">Tharo shah</option>
+                            <option value="Theing jattan more">Theing jattan more</option>
+                            <option value="Thull">Thull</option>
+                            <option value="Tibba sultanpur">Tibba sultanpur</option>
+                            <option value="Tobatek singh">Tobatek singh</option>
+                            <option value="Topi">Topi</option>
+                            <option value="Toru">Toru</option>
+                            <option value="Trinda mohd pannah">Trinda mohd pannah</option>
+                            <option value="Turbat">Turbat</option>
+                            <option value="Ubaro">Ubaro</option>
+                            <option value="Zahir pir">Zahir pir</option>
+                            <option value="Shedani sharif">Shedani sharif</option>
+                            <option value="Phool nagar">Phool nagar</option>
+                            <option value="Rajana">Rajana</option>
+                            <option value="Rajanpur">Rajanpur</option>
+                            <option value="Rangoo">Rangoo</option>
+                            <option value="Ranipur">Ranipur</option>
+                            <option value="Ratto dero">Ratto dero</option>
+                            <option value="Rawala kot">Rawala kot</option>
+                            <option value="Rawat">Rawat</option>
+                            <option value="Renala khurd">Renala khurd</option>
+                            <option value="Risalpur">Risalpur</option>
+                            <option value="Rohri">Rohri</option>
+                            <option value="Raiwand">Raiwand</option>
+                            <option value="Rahwali">Rahwali</option>
+                            <option value="Rabwah">Rabwah</option>
+                            <option value="Piaro goth">Piaro goth</option>
+                            <option value="Pindi bhohri">Pindi bhohri</option>
+                            <option value="Pindi dadan khan">Pindi dadan khan</option>
+                            <option value="Pindi gheb">Pindi gheb</option>
+                            <option value="Pir mahal">Pir mahal</option>
+                            <option value="Pishin">Pishin</option>
+                            <option value="Qalandarabad">Qalandarabad</option>
+                            <option value="Qasba gujrat">Qasba gujrat</option>
+                            <option value="Qazi ahmed">Qazi ahmed</option>
+                            <option value="Quaidabad">Quaidabad</option>
+                            <option value="Sagri">Sagri</option>
+                            <option value="Saidu sharif">Saidu sharif</option>
+                            <option value="Satyana bangla">Satyana bangla</option>
+                            <option value="Sehar baqlas">Sehar baqlas</option>
+                            <option value="Serai alamgir">Serai alamgir</option>
+                            <option value="Shadiwal">Shadiwal</option>
+                            <option value="Shah kot">Shah kot</option>
+                            <option value="Shahdad kot">Shahdad kot</option>
+                            <option value="Shahdad pur">Shahdad pur</option>
+                            <option value="Shahpur chakar">Shahpur chakar</option>
+                            <option value="Shaikhupura">Shaikhupura</option>
+                            <option value="Shamsabad">Shamsabad</option>
+                            <option value="Sara e naurang">Sara e naurang</option>
+                            <option value="Sara e alamgir">Sara e alamgir</option>
+                            <option value="Sanjwal">Sanjwal</option>
+                            <option value="Sajawal">Sajawal</option>
+                            <option value="Sakrand">Sakrand</option>
+                            <option value="Samanabad">Samanabad</option>
+                            <option value="Sambrial">Sambrial</option>
+                            <option value="Samma satta">Samma satta</option>
+                            <option value="Samundri">Samundri</option>
+                            <option value="Sanghar">Sanghar</option>
+                            <option value="Sanghi">Sanghi</option>
+                            <option value="Sangla hill">Sangla hill</option>
+                            <option value="Sangote">Sangote</option>
+                            <option value="Shankiari">Shankiari</option>
+                            <option value="Bat khela">Bat khela</option>
+                            <option value="Chak jamal">Chak jamal</option>
+                            <option value="Chak jhumra">Chak jhumra</option>
+                            <option value="Chak sawara">Chak sawara</option>
+                            <option value="Chak sheza">Chak sheza</option>
+                            <option value="Chakwal">Chakwal</option>
+                            <option value="Charsada">Charsada</option>
+                            <option value="Chashma">Chashma</option>
+                            <option value="Chawinda">Chawinda</option>
+                            <option value="Chicha watni">Chicha watni</option>
+                            <option value="Chiniot">Chiniot</option>
+                            <option value="Chak 46">Chak 46</option>
+                            <option value="Chak 4 b c">Chak 4 b c</option>
+                            <option value="Chaininda">Chaininda</option>
+                            <option value="Bhai pheru">Bhai pheru</option>
+                            <option value="Bhalwal">Bhalwal</option>
+                            <option value="Bhan saeedabad">Bhan saeedabad</option>
+                            <option value="Bhera">Bhera</option>
+                            <option value="Bhimbar">Bhimbar</option>
+                            <option value="Bhirya road">Bhirya road</option>
+                            <option value="Bhuawana">Bhuawana</option>
+                            <option value="Blitang">Blitang</option>
+                            <option value="Buchay key">Buchay key</option>
+                            <option value="Chacklala">Chacklala</option>
+                            <option value="Chishtian">Chishtian</option>
+                            <option value="Chohar jamali">Chohar jamali</option>
+                            <option value="Daska">Daska</option>
+                            <option value="Daud khel">Daud khel</option>
+                            <option value="Daulat pur">Daulat pur</option>
+                            <option value="Deh pathaan">Deh pathaan</option>
+                            <option value="Depal pur">Depal pur</option>
+                            <option value="Dera ghazi khan">Dera ghazi khan</option>
+                            <option value="Dera murad jamali">Dera murad jamali</option>
+                            <option value="Dera nawab sahib">Dera nawab sahib</option>
+                            <option value="Dhatmal">Dhatmal</option>
+                            <option value="Dhoun kal">Dhoun kal</option>
+                            <option value="Darya khan">Darya khan</option>
+                            <option value="Dargai">Dargai</option>
+                            <option value="Dandot">Dandot</option>
+                            <option value="Choppar hatta">Choppar hatta</option>
+                            <option value="Chowha saidan shah">Chowha saidan shah</option>
+                            <option value="Chowk azam">Chowk azam</option>
+                            <option value="Chowk mailta">Chowk mailta</option>
+                            <option value="Chowk munda">Chowk munda</option>
+                            <option value="Chunian">Chunian</option>
+                            <option value="Dadakhel">Dadakhel</option>
+                            <option value="Dadu">Dadu</option>
+                            <option value="Dadyal A.K.">Dadyal A.K.</option>
+                            <option value="Daharki">Daharki</option>
+                            <option value="Digri">Digri</option>
+                            <option value="Gujrat">Gujrat</option>
+                            <option value="Sadiqabad">Sadiqabad</option>
+                            <option value="Kotli Azad Kashmir">Kotli Azad Kashmir</option>
+                            <option value="Khanewal">Khanewal</option>
+                            <option value="Mardan">Mardan</option>
+                            <option value="Vehari">Vehari</option>
+                            <option value="Sakhar">Sakhar</option>
+                            <option value="Hafizabad">Hafizabad</option>
+                            <option value="Shekhupura">Shekhupura</option>
+                            <option value="Jhang">Jhang</option>
+                            <option value="Bannu">Bannu</option>
+                            <option value="Kharian">Kharian</option>
+                            <option value="Burewala">Burewala</option>
+                            <option value="Bahawalnagar">Bahawalnagar</option>
+                            <option value="Gujranwala">Gujranwala</option>
+                            <option value="Sahiwaal">Sahiwaal</option>
+                            <option value="Bhakkar">Bhakkar</option>
+                            <option value="Sialkot">Sialkot</option>
+                            <option value="Sargodha">Sargodha</option>
+                            <option value="Khushab">Khushab</option>
+                            <option value="Kohat">Kohat</option>
+                            <option value="Wah cantt">Wah cantt</option>
+                            <option value="D-I-Khan">D-I-Khan</option>
+                            <option value="Talagang">Talagang</option>
+                            <option value="Nowshera">Nowshera</option>
+                            <option value="Okara">Okara</option>
+                            <option value="Akhora khattak">Akhora khattak</option>
+                            <option value="Ali chak">Ali chak</option>
+                            <option value="Allahabad">Allahabad</option>
+                            <option value="Amangarh">Amangarh</option>
+                            <option value="Arifwala">Arifwala</option>
+                            <option value="Babri banda">Babri banda</option>
+                            <option value="Badin">Badin</option>
+                            <option value="Bahawalpur">Bahawalpur</option>
+                            <option value="Balakot">Balakot</option>
+                            <option value="Barbar loi">Barbar loi</option>
+                            <option value="Adda shaiwala">Adda shaiwala</option>
+                            <option value="Adda jahan khan">Adda jahan khan</option>
+                            <option value="Abdul hakim">Abdul hakim</option>
+                            <option value="Attock">Attock</option>
+                            <option value="Thatta">Thatta</option>
+                            <option value="Gwadar">Gwadar</option>
+                            <option value="Chitral">Chitral</option>
+                            <option value="Swat">Swat</option>
+                            <option value="Kasur">Kasur</option>
+                            <option value="Rahimyar Khan">Rahimyar Khan</option>
+                            <option value="Ghotki">Ghotki</option>
+                            <option value="Larkana">Larkana</option>
+                            <option value="Mirpur">Mirpur</option>
+                            <option value="Baroute">Baroute</option>
+                            <option value="Dijkot">Dijkot</option>
+                            <option value="Hub inds estate">Hub inds estate</option>
+                            <option value="Jauharabad">Jauharabad</option>
+                            <option value="Jehangira">Jehangira</option>
+                            <option value="Jehanian">Jehanian</option>
+                            <option value="Jhal Magsi">Jhal Magsi</option>
+                            <option value="Jhand">Jhand</option>
+                            <option value="Jhatta bhutta">Jhatta bhutta</option>
+                            <option value="Jhelum">Jhelum</option>
+                            <option value="Jhudo">Jhudo</option>
+                            <option value="Kabir wala">Kabir wala</option>
+                            <option value="Kacha khooh">Kacha khooh</option>
+                            <option value="Jaranwala">Jaranwala</option>
+                            <option value="Jandanwala">Jandanwala</option>
+                            <option value="Jan pur">Jan pur</option>
+                            <option value="Hub-Balochistan">Hub-Balochistan</option>
+                            <option value="Hunza">Hunza</option>
+                            <option value="Issa khel">Issa khel</option>
+                            <option value="Jaccobabad">Jaccobabad</option>
+                            <option value="Jaja abasian">Jaja abasian</option>
+                            <option value="Jalal pur jatan">Jalal pur jatan</option>
+                            <option value="Jalal pur priwala">Jalal pur priwala</option>
+                            <option value="Jampur">Jampur</option>
+                            <option value="Jamrud road">Jamrud road</option>
+                            <option value="Jamshoro">Jamshoro</option>
+                            <option value="Kahuta">Kahuta</option>
+                            <option value="Kakul">Kakul</option>
+                            <option value="Karak">Karak</option>
+                            <option value="Karoor pacca">Karoor pacca</option>
+                            <option value="Karore lalisan">Karore lalisan</option>
+                            <option value="Kashmir">Kashmir</option>
+                            <option value="Kashmore">Kashmore</option>
+                            <option value="Kazi ahmed">Kazi ahmed</option>
+                            <option value="Khairpur">Khairpur</option>
+                            <option value="Khan qah sharif">Khan qah sharif</option>
+                            <option value="Khanbel">Khanbel</option>
+                            <option value="Khandabad">Khandabad</option>
+                            <option value="Kandiaro">Kandiaro</option>
+                            <option value="Kandh kot">Kandh kot</option>
+                            <option value="Kamra">Kamra</option>
+                            <option value="Kakur town">Kakur town</option>
+                            <option value="Kala bagh">Kala bagh</option>
+                            <option value="Kala shah kaku">Kala shah kaku</option>
+                            <option value="Kalar syedian">Kalar syedian</option>
+                            <option value="Kalaswala">Kalaswala</option>
+                            <option value="Kallur kot">Kallur kot</option>
+                            <option value="Kamalia">Kamalia</option>
+                            <option value="Kamalia musa">Kamalia musa</option>
+                            <option value="Kamber ali khan">Kamber ali khan</option>
+                            <option value="Kamokey">Kamokey</option>
+                            <option value="Khangarh">Khangarh</option>
+                            <option value="Dina">Dina</option>
+                            <option value="Feteh jhang">Feteh jhang</option>
+                            <option value="Fiza got">Fiza got</option>
+                            <option value="Gadoon amazai">Gadoon amazai</option>
+                            <option value="Gaggo mandi">Gaggo mandi</option>
+                            <option value="Gakhar mandi">Gakhar mandi</option>
+                            <option value="Gambat">Gambat</option>
+                            <option value="Gambet">Gambet</option>
+                            <option value="Garh maharaja">Garh maharaja</option>
+                            <option value="Garh more">Garh more</option>
+                            <option value="Garhi yaseen">Garhi yaseen</option>
+                            <option value="Feroz watan">Feroz watan</option>
+                            <option value="Feroz walla">Feroz walla</option>
+                            <option value="Fateh pur">Fateh pur</option>
+                            <option value="Dinga">Dinga</option>
+                            <option value="Dir">Dir</option>
+                            <option value="Doaaba">Doaaba</option>
+                            <option value="Doltala">Doltala</option>
+                            <option value="Domeli">Domeli</option>
+                            <option value="Dudial">Dudial</option>
+                            <option value="Dunyapur">Dunyapur</option>
+                            <option value="Eminabad">Eminabad</option>
+                            <option value="Estate l.m factory">Estate l.m factory</option>
+                            <option value="Farooqabad">Farooqabad</option>
+                            <option value="Gari habibullah">Gari habibullah</option>
+                            <option value="Gari mori">Gari mori</option>
+                            <option value="Hariwala">Hariwala</option>
+                            <option value="Haroonabad">Haroonabad</option>
+                            <option value="Hasilpur">Hasilpur</option>
+                            <option value="Hassan abdal">Hassan abdal</option>
+                            <option value="Hattar">Hattar</option>
+                            <option value="Hattian lawrencepur">Hattian lawrencepur</option>
+                            <option value="Haveli lakha">Haveli lakha</option>
+                            <option value="Havelian">Havelian</option>
+                            <option value="Hayatabad">Hayatabad</option>
+                            <option value="Hazro">Hazro</option>
+                            <option value="Head marala">Head marala</option>
+                            <option value="Hari pur">Hari pur</option>
+                            <option value="Hangu">Hangu</option>
+                            <option value="Gharo">Gharo</option>
+                            <option value="Ghazi">Ghazi</option>
+                            <option value="Gilgit">Gilgit</option>
+                            <option value="Gohar ghoushti">Gohar ghoushti</option>
+                            <option value="Gojar khan">Gojar khan</option>
+                            <option value="Gojra">Gojra</option>
+                            <option value="Goular khel">Goular khel</option>
+                            <option value="Guddu">Guddu</option>
+                            <option value="Gujjar khan">Gujjar khan</option>
+                            <option value="Hala">Hala</option>
+                            <option value="Hub">Hub</option>
+                        </select>
+                        <input type="text" class="form-control" id="City-tx" style="display:none;" />
+                    </div>
+
+                    <div class="col-md-1 form_radios">
+                        <button type="submit" class="btn btn-success" id="btn_search">
+                            Search <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </div>
+
+                    <div class="col-md-2 form_radios">
+                        <button type="submit" class="btn btn-danger" id="btn_reset">
+                            Reset <span class="glyphicon glyphicon-remove-circle"></span>
+                        </button>
+                    </div>
+
+                    <div class="clearfix"> </div>
+                    <div class="col-sm-12"><hr></div>
+                    <div class="clearfix"> </div>
+
+                    <div id="profiles">
+
+                    </div>
+
+
+                </div>
+
+                <ul class="pagination"></ul>
+            </div>
+
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="feedbackmodel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#c32143">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel" style="color:#fff;"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Comment : </label>
+                        </div>
+                        <div class="col-md-8">
+                            <textarea rows="4" cols="40" style="resize: none;" id="comment"></textarea>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Rating : </label>
+                        </div>
+                        <div class="col-md-8 rating">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" id="feedback-submit" data-id="">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="contactusmodel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#c32143">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title-contactus" id="myModalLabel" style="color:#fff;"></h4>
+                </div>
+                <form action="" method="post" id="contact-submit-form">
+                    <div class="modal-body">
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Your Name : </label>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" required id="yourname" name="yourname" />
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Your Email : </label>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="email" class="form-control" required id="youremail" name="youremail" />
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Message : </label>
+                            </div>
+                            <div class="col-md-8">
+                                <textarea rows="4" cols="48" style="resize: none;" id="message" name="message"></textarea>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success" id="contact-submit" data-email="">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
